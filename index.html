@@ -1,123 +1,424 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-g">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode Kraft - High-Performance Web Development</title>
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Final Year Project Support — Landing</title>
+  <style>
+    /* ====== Palette ====== */
+    :root{
+      --blue:#007BFF; /* primary */
+      --blue-dark:#0056B3;
+      --aqua:#00D2B8; /* accent */
+      --bg:#f8fbff;
+      --text:#111217;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased}
+
+    /* ====== Page layout ====== */
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+    header{position:relative;padding:18px 0;display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo-mark{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--aqua));box-shadow:0 6px 18px rgba(3,82,164,0.18);color:#fff;font-weight:700}
+    nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-weight:600}
+
+    /* ====== Hero ====== */
+    .hero{min-height:78vh;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;padding:40px 0}
+    .hero-left{padding-right:8px}
+    .eyebrow{display:inline-block;padding:6px 12px;background:rgba(0,210,184,0.08);border:1px solid rgba(0,210,184,0.12);color:var(--blue-dark);border-radius:999px;font-weight:700;margin-bottom:16px}
+    h1{font-size:2.25rem;line-height:1.02;margin:0 0 14px}
+    .typewriter{color:var(--blue-dark);font-weight:800}
+    p.lead{color:var(--muted);margin:0 0 20px}
+    .btn-row{display:flex;gap:12px;align-items:center}
+    .btn-main{background:linear-gradient(90deg,var(--blue),var(--aqua));color:white;padding:12px 18px;border-radius:12px;border:none;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(0,123,255,0.18);transform:translateZ(0);transition:transform .18s ease}
+    .btn-main:hover{transform:translateY(-4px)}
+    .btn-outline{background:transparent;border:2px solid var(--blue);color:var(--blue);padding:10px 16px;border-radius:12px;font-weight:700;cursor:pointer}
+
+    /* floating icons */
+    .floating-icons{position:absolute;right:calc(50% - 30px);top:10%;pointer-events:none}
+    .float-ico{position:relative;width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.85);display:grid;place-items:center;box-shadow:0 8px 20px rgba(11,35,63,0.06);backdrop-filter:blur(6px)}
+    .ico-wrap{display:flex;gap:12px;align-items:center}
+    .float-ico svg{width:28px;height:28px}
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+    .float-1{animation:floaty 5s ease-in-out infinite}
+    .float-2{animation:floaty 6.5s ease-in-out infinite}
+
+    /* hero right panel */
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.9),#ffffff);border-radius:18px;padding:20px;box-shadow:0 14px 40px rgba(3,82,164,0.08);border:1px solid rgba(0,0,0,0.03)}
+    .stats{display:flex;gap:12px;flex-wrap:wrap}
+    .stat{flex:1;min-width:120px;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(0,210,184,0.06),rgba(0,123,255,0.03));text-align:center}
+    .stat h3{margin:0;font-size:1.25rem;color:var(--blue-dark)}
+    .stat p{margin:6px 0 0;color:var(--muted);font-weight:700}
+
+    /* sections */
+    section{padding:68px 0;border-top:1px solid rgba(10,10,10,0.02)}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+    /* service cards */
+    .service{background:white;border-radius:14px;padding:22px;box-shadow:0 8px 30px rgba(2,33,87,0.04);transition:transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s}
+    .service:hover{transform:translateY(-10px);box-shadow:0 26px 60px rgba(1,120,255,0.12)}
+    .service .tag{display:inline-block;padding:8px;border-radius:10px;background:linear-gradient(90deg,var(--blue),var(--aqua));color:white;font-weight:800}
+    .service h4{margin:12px 0 8px}
+    .service p{color:var(--muted);margin:0}
+
+    /* flip card */
+    .flip{perspective:1000px}
+    .flip-inner{position:relative;width:100%;height:180px;transform-style:preserve-3d;transition:transform .7s}
+    .flip:hover .flip-inner{transform:rotateY(180deg)}
+    .flip-face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:18px;background:white;backface-visibility:hidden}
+    .flip-back{transform:rotateY(180deg);background:linear-gradient(90deg,var(--aqua),var(--blue));color:white}
+
+    /* features */
+    .features{display:flex;gap:20px;align-items:center}
+    .feature{display:flex;gap:12px;align-items:flex-start}
+
+    /* testimonials */
+    .testi-wrap{position:relative;overflow:hidden;border-radius:14px}
+    .testi-slider{display:flex;gap:12px;transition:transform .5s ease}
+    .testi{min-width:320px;background:white;padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(2,33,87,0.04)}
+
+    /* CTA */
+    .cta{display:flex;align-items:center;justify-content:space-between;padding:28px;border-radius:16px;background:linear-gradient(135deg,rgba(0,123,255,0.12),rgba(0,210,184,0.06));}
+    .pulse{position:relative}
+    .pulse::after{content:'';position:absolute;inset:-6px;border-radius:16px;background:linear-gradient(90deg,var(--blue),var(--aqua));filter:blur(20px);opacity:.28}
+
+    /* footer */
+    footer{padding:28px 0;color:var(--muted)}
+
+    /* small screens */
+    @media (max-width:920px){
+      .hero{grid-template-columns:1fr;min-height:unset}
+      .floating-icons{display:none}
+      .grid-3{grid-template-columns:1fr}
+      .testi{min-width:100%}
+      .container{padding:20px}
+    }
+
+    /* reveal animations */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    /* tiny helpers */
+    .muted{color:var(--muted)}
+
+  </style>
 </head>
 <body>
+  <div style="position:fixed;inset:0;z-index:-1;overflow:hidden">
+    <!-- animated gradient background -->
+    <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 800 600" style="min-height:100%;display:block;">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#007BFF" stop-opacity="0.12" />
+          <stop offset="50%" stop-color="#00D2B8" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="#007BFF" stop-opacity="0.06" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="100%" height="100%" fill="url(#g1)"></rect>
+    </svg>
+  </div>
 
-    <header class="navbar">
-        <div class="container">
-            <a href="#" class="logo">
-                KODE KRAFT
-            </a>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <a href="#contact" class="cta-button">Get a Free Quote</a>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-mark">FJ</div>
+        <div>
+          <div style="font-weight:800">FYP Support Hub</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Idea → Code → Report → Present</div>
         </div>
+      </div>
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#how">How it Works</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#contact" class="btn-outline">Get Started</a>
+      </nav>
     </header>
 
     <main>
-        <section id="home" class="hero">
-            <div class="container">
-                <h1>We Kraft High-Performance Websites That Drive Your Business</h1>
-                <p class="tagline">From concept to code, Kode Kraft transforms your vision into a stunning, responsive, and powerful web presence.</p>
-                <div class="hero-buttons">
-                    <a href="#portfolio" class="cta-button">View Our Work</a>
-                    <a href="#services" class="cta-button-outline">Our Services</a>
-                </div>
-            </div>
-        </section>
+      <section class="hero" aria-label="hero">
+        <div class="hero-left">
+          <span class="eyebrow">Final Year Project Support</span>
+          <h1 class="reveal" id="headline">Final Year Project? <span class="typewriter" id="type"></span></h1>
+          <p class="lead reveal">Personalized guidance, ready-to-use source codes, and polished reports & presentations — built to make your final year project stand out.</p>
+          <div class="btn-row reveal">
+            <button class="btn-main" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Expert Help 🚀</button>
+            <button class="btn-outline" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">See Services</button>
+          </div>
 
-        <section id="services" class="services-overview">
-            <div class="container">
-                <h2>Our Expertise</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon">&lt;/&gt;</div>
-                        <h3>Custom Development</h3>
-                        <p>Building scalable web applications and websites from scratch, tailored to your exact needs.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">🎨</div>
-                        <h3>UI/UX Design</h3>
-                        <p>Crafting intuitive, beautiful, and user-centric designs that engage and convert.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">🛒</div>
-                        <h3>E-commerce Solutions</h3>
-                        <p>Powering your online store with robust platforms and seamless checkout experiences.</p>
-                    </div>
-                </div>
+          <div style="margin-top:22px;display:flex;gap:12px;align-items:center" class="reveal">
+            <div style="display:flex;gap:8px;align-items:center">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div>
+                <div style="font-weight:800">+300</div>
+                <div class="muted" style="font-size:13px">Projects Delivered</div>
+              </div>
             </div>
-        </section>
-
-        <section id="portfolio" class="portfolio-featured">
-            <div class="container">
-                <h2>Our Proven Results</h2>
-                <div class="portfolio-grid">
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/600x400.png?text=Project+1+Mockup" alt="Project 1">
-                        <h3>Corporate Website Redesign</h3>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/600x400.png?text=Project+2+Mockup" alt="Project 2">
-                        <h3>E-commerce Web App</h3>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/600x400.png?text=Project+3+Mockup" alt="Project 3">
-                        <h3>SaaS Platform UI</h3>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <a href="#" class="cta-button">Explore Full Portfolio</a>
-                </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div>
+                <div style="font-weight:800">4.8/5</div>
+                <div class="muted" style="font-size:13px">Average Rating</div>
+              </div>
             </div>
-        </section>
-
-        <section id="about" class="testimonials">
-            <div class="container">
-                <h2>What Our Clients Say</h2>
-                <div class="testimonial-card">
-                    <p class="quote">"Kode Kraft delivered beyond our expectations. Our new site is fast, beautiful, and converting 40% better."</p>
-                    <p class="author">— Jane Doe, CEO of ExampleCo</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="final-cta">
-            <div class="container">
-                <h2>Ready to Start Your Project?</h2>
-                <p>Let's build something amazing together.</p>
-                <a href="mailto:hello@kodekraft.com" class="cta-button">Get in Touch</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-logo">KODE KRAFT</div>
-            <div class="footer-links">
-                <a href="#services">Services</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#about">About</a>
-            </div>
-            <p>&copy; 2025 Kode Kraft. All Rights Reserved.</p>
+          </div>
         </div>
-    </footer>
 
+        <div>
+          <div class="card reveal">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div>
+                <div style="font-weight:800">Fast Track Plan</div>
+                <div class="muted" style="font-size:13px">Complete in 2–3 weeks</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-weight:900;font-size:20px;color:var(--blue-dark)">₹6,999</div>
+                <div class="muted" style="font-size:12px">One-time</div>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <h3>Idea</h3>
+                <p>Concept & scope</p>
+              </div>
+              <div class="stat">
+                <h3>Code</h3>
+                <p>Working source</p>
+              </div>
+              <div class="stat">
+                <h3>Report</h3>
+                <p>Documentation</p>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+              <a class="btn-outline" href="#contact">Book Consultation</a>
+              <div class="muted" style="font-size:12px">30-minute initial call</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="flip reveal">
+              <div class="flip-inner">
+                <div class="flip-face service">
+                  <div>
+                    <div class="tag">CODING</div>
+                    <h4>Full-Stack Code</h4>
+                    <p>Clean, documented, modular source code that you can run & extend.</p>
+                  </div>
+                </div>
+                <div class="flip-face flip-back">
+                  <div>
+                    <h4>React / Node / Django</h4>
+                    <p style="opacity:0.9">We deliver code with setup instructions and sample data.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="service reveal">
+              <div class="tag">REPORT</div>
+              <h4>Polished Report</h4>
+              <p>Formatted PDF with references, diagrams, and methodology.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- floating icons -->
+        <div class="floating-icons" aria-hidden="true" style="display:flex;gap:10px;right:24px;top:8%">
+          <div class="float-ico float-1" style="--i:1">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8" stroke="#0056B3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="float-ico float-2">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M12 3v18" stroke="#00D2B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Services -->
+      <section id="services">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+          <div>
+            <h2 class="reveal">What we offer</h2>
+            <p class="muted reveal">Comprehensive services tailored for your final year project needs.</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="service reveal">
+            <div class="tag">IDEA</div>
+            <h4>Topic & Scope</h4>
+            <p>Project idea shortlisting, feasibility, and milestones.</p>
+          </div>
+          <div class="service reveal">
+            <div class="tag">DEVELOP</div>
+            <h4>Implementation</h4>
+            <p>Backend, frontend, database, APIs, and deployment help.</p>
+          </div>
+          <div class="service reveal">
+            <div class="tag">DELIVER</div>
+            <h4>Report & PPT</h4>
+            <p>Academic report, figures, and presentation slides with speaker notes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section id="how">
+        <h2 class="reveal">How it works</h2>
+        <div style="display:flex;gap:20px;margin-top:20px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px" class="reveal">
+            <div style="font-weight:800">1. Book a Call</div>
+            <p class="muted">Discuss goals, timeline, and deliverables.</p>
+          </div>
+          <div style="flex:1;min-width:220px" class="reveal">
+            <div style="font-weight:800">2. Get a Plan</div>
+            <p class="muted">Receive a milestone-based plan and price.</p>
+          </div>
+          <div style="flex:1;min-width:220px" class="reveal">
+            <div style="font-weight:800">3. Iterate & Deliver</div>
+            <p class="muted">Review demo, request changes, and finalize the report & PPT.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- testimonials -->
+      <section id="testimonials">
+        <h2 class="reveal">What students say</h2>
+        <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+          <button id="prevTesti" class="btn-outline">◀</button>
+          <div class="testi-wrap" style="flex:1">
+            <div class="testi-slider" id="testiSlider">
+              <div class="testi reveal">
+                <div style="font-weight:800">"Helped me finish my project on time."</div>
+                <p class="muted">— Priya, CSE</p>
+              </div>
+              <div class="testi reveal">
+                <div style="font-weight:800">"Clean code and great explanations."</div>
+                <p class="muted">— Ahmed, IT</p>
+              </div>
+              <div class="testi reveal">
+                <div style="font-weight:800">"Presentation and report were top-tier."</div>
+                <p class="muted">— Sanjay, ECE</p>
+              </div>
+            </div>
+          </div>
+          <button id="nextTesti" class="btn-outline">▶</button>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section style="margin-top:28px">
+        <div class="cta reveal">
+          <div>
+            <div style="font-weight:900;font-size:20px">Ready to make your Final Year Project shine?</div>
+            <div class="muted" style="margin-top:6px">Book a free consultation and get a clear plan in 48 hours.</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <a class="btn-main pulse" href="#contact">Book Free Call</a>
+            <a class="btn-outline" href="#contact">Message Us</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- contact -->
+      <section id="contact">
+        <h2 class="reveal">Contact & Booking</h2>
+        <div style="display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:18px">
+          <form id="contactForm" class="reveal" style="background:white;padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(2,33,87,0.04)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <input name="name" placeholder="Your name" required style="padding:12px;border-radius:8px;border:1px solid #e6eefb" />
+              <input name="email" placeholder="Email" type="email" required style="padding:12px;border-radius:8px;border:1px solid #e6eefb" />
+            </div>
+            <textarea name="message" placeholder="Tell us about your project (brief)" style="width:100%;margin-top:10px;padding:12px;border-radius:8px;border:1px solid #e6eefb" rows="6"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+              <div class="muted">We'll reply within 24–48 hours</div>
+              <button type="submit" class="btn-main">Send Request</button>
+            </div>
+          </form>
+
+          <aside class="card reveal">
+            <div style="font-weight:800">Why choose our support?</div>
+            <ul style="margin-top:12px;color:var(--muted)">
+              <li>Mentors with industry experience</li>
+              <li>Well-documented source code</li>
+              <li>Academic formatting & references</li>
+            </ul>
+            <div style="margin-top:12px">
+              <div style="font-weight:800">Office Hours</div>
+              <div class="muted">Mon–Sat · 10:00 – 18:00</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <footer style="margin-top:30px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+          <div class="muted">© 2025 FYP Support Hub</div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <a class="muted" href="#">Privacy</a>
+            <a class="muted" href="#">Terms</a>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script>
+    // Simple typewriter (looping through phrases)
+    (function(){
+      const el = document.getElementById('type');
+      const phrases = ['We\'ve Got You Covered! 🎓','Idea → Code → Report','Finish Faster. Score Higher.'];
+      let p = 0, i = 0, forward = true;
+      function tick(){
+        const str = phrases[p];
+        if(forward){ i++; if(i>str.length){ forward=false; setTimeout(tick,1200); return; }}
+        else { i--; if(i<0){ forward=true; p=(p+1)%phrases.length; setTimeout(tick,400); return; }}
+        el.textContent = str.slice(0,i);
+        setTimeout(tick, forward?80:40);
+      }
+      setTimeout(tick,600);
+    })();
+
+    // IntersectionObserver reveal
+    (function(){
+      const obs = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target);} });
+      },{threshold:0.12});
+      document.querySelectorAll('.reveal').forEach(n=>obs.observe(n));
+    })();
+
+    // Testimonial slider simple
+    (function(){
+      const slider = document.getElementById('testiSlider');
+      const prev = document.getElementById('prevTesti');
+      const next = document.getElementById('nextTesti');
+      let idx = 0;
+      function update(){
+        const w = slider.children[0].offsetWidth + 12; // gap
+        slider.style.transform = `translateX(${-idx * w}px)`;
+      }
+      prev.addEventListener('click',()=>{ idx = Math.max(0, idx-1); update(); });
+      next.addEventListener('click',()=>{ idx = Math.min(slider.children.length-1, idx+1); update(); });
+      window.addEventListener('resize', update);
+      // auto-advance
+      setInterval(()=>{ idx = (idx+1) % slider.children.length; update(); }, 5500);
+      setTimeout(update,300);
+    })();
+
+    // contact form handler (demo)
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Sending...';
+      setTimeout(()=>{ btn.disabled=false; btn.textContent='Send Request'; alert('Thanks! We\'ll reach out within 24–48 hours.'); this.reset(); },1200);
+    });
+
+  </script>
 </body>
 </html>
