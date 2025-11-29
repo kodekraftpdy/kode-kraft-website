@@ -1,718 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode Kraft - Final Year Project Support</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --deep-blue: #0056B3;
-            --vibrant-blue: #007BFF;
-            --electric-green: #00D2B8;
-            --dark-bg: #0a192f;
-            --light-bg: #f8f9fa;
-            --text-light: #ffffff;
-            --text-dark: #333333;
-        }
-
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            overflow-x: hidden;
-        }
-
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background-color: rgba(10, 25, 47, 0.9);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-light);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo span {
-            color: var(--electric-green);
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: var(--vibrant-blue);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        nav ul li a:hover {
-            color: var(--electric-green);
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--electric-green);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .cta-button {
-            background: linear-gradient(45deg, var(--vibrant-blue), var(--electric-green));
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 210, 184, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 210, 184, 0.4);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 5%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 650px;
-            z-index: 10;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s ease forwards;
-        }
-
-        .hero h1 span {
-            color: var(--electric-green);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #ccd6f6;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s ease 0.3s forwards;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s ease 0.6s forwards;
-        }
-
-        .hero-buttons .cta-button {
-            padding: 15px 30px;
-            font-size: 18px;
-        }
-
-        .hero-buttons .secondary-button {
-            background: transparent;
-            border: 2px solid var(--electric-green);
-            color: var(--electric-green);
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .hero-buttons .secondary-button:hover {
-            background-color: rgba(0, 210, 184, 0.1);
-        }
-
-        .hero-animation {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 500px;
-            height: 500px;
-            opacity: 0;
-            animation: fadeIn 1s ease 0.9s forwards;
-        }
-
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--vibrant-blue), var(--electric-green));
-            opacity: 0.7;
-            filter: blur(40px);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            right: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            bottom: 20%;
-            right: 20%;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 50%;
-            right: 30%;
-            animation-delay: 4s;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 100px 5%;
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--deep-blue);
-        }
-
-        .section-title p {
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .service-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--vibrant-blue), var(--electric-green));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 28px;
-            color: white;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--deep-blue);
-        }
-
-        .service-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Process Section */
-        .process {
-            padding: 100px 5%;
-            background-color: var(--dark-bg);
-        }
-
-        .process-steps {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .process-steps::before {
-            content: '';
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(to right, var(--vibrant-blue), var(--electric-green));
-            z-index: 1;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .step-number {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--dark-bg);
-            border: 3px solid var(--vibrant-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-light);
-            transition: all 0.3s ease;
-        }
-
-        .step:hover .step-number {
-            background: linear-gradient(45deg, var(--vibrant-blue), var(--electric-green));
-            transform: scale(1.1);
-        }
-
-        .step h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
-
-        .step p {
-            color: #ccd6f6;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 5%;
-            background: linear-gradient(135deg, var(--deep-blue), var(--vibrant-blue));
-            text-align: center;
-            color: white;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-
-        .cta-section .cta-button {
-            background: white;
-            color: var(--deep-blue);
-            font-size: 18px;
-            padding: 15px 40px;
-        }
-
-        .cta-section .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background-color: #0a1425;
-            padding: 60px 5% 30px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--electric-green);
-        }
-
-        .footer-column p, .footer-column a {
-            color: #ccd6f6;
-            line-height: 1.8;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--electric-green);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background: var(--electric-green);
-            transform: translateY(-5px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #8892b0;
-        }
-
-        /* Animations */
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-animation {
-                display: none;
-            }
-            
-            .hero-content {
-                max-width: 100%;
-                text-align: center;
-            }
-            
-            .process-steps {
-                flex-direction: column;
-                gap: 40px;
-            }
-            
-            .process-steps::before {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kode Kraft — 3D Projects Marketplace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* === Color tokens taken from your provided styles === */
+    :root{
+      --deep-blue:#0056B3; /* for accents */
+      --vibrant-blue:#007BFF;
+      --electric-green:#00D2B8;
+      --dark-bg:#0a192f;
+      --card-bg:#121820;
+      --text-light:#ffffff;
+      --muted:#8892b0;
+    }
+
+    /* Global reset + internal font fallback */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,system-ui,-apple-system,\"Helvetica Neue\",Arial}
+    body{background:linear-gradient(180deg,#071027 0%, var(--dark-bg) 60%);color:var(--text-light);}
+
+    a{color:inherit}
+
+    header{position:sticky;top:0;z-index:40;padding:16px 6%;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(10,25,47,0.65),transparent);backdrop-filter:blur(6px)}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800}
+    .logo i{color:var(--vibrant-blue);font-size:20px}
+    .logo span{color:var(--electric-green)}
+
+    .nav{display:flex;gap:18px;align-items:center}
+    .nav a{padding:8px 12px;border-radius:8px;font-weight:600;color:var(--muted);text-decoration:none}
+    .nav a:hover{color:var(--text-light);background:rgba(255,255,255,0.03)}
+
+    .hero{padding:80px 6% 40px;display:grid;grid-template-columns:1fr 520px;gap:30px;align-items:center}
+    .hero-left{max-width:720px}
+    .hero h1{font-size:44px;line-height:1.02;margin:0 0 12px}
+    .hero h1 span{color:var(--electric-green)}
+    .hero p{color:#c8d6f6;font-size:1.05rem;margin-bottom:18px}
+    .hero-cta{display:flex;gap:12px}
+    .btn{background:linear-gradient(45deg,var(--vibrant-blue),var(--electric-green));border:none;color:#042233;padding:12px 22px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,210,184,0.12)}
+    .btn.secondary{background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--text-light)}
+
+    /* 3D showcase area */
+    .scene{height:420px;display:flex;align-items:center;justify-content:center;perspective:1400px}
+
+    .carousel{
+      width:420px;height:300px;transform-style:preserve-3d;position:relative;transition:transform 0.8s cubic-bezier(.2,.9,.3,1);
+    }
+
+    .card-3d{
+      position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate(-50%,-50%);width:320px;height:220px;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(2,6,23,0.6);background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;justify-content:space-between;color:var(--text-light);transition:transform 0.25s ease,box-shadow 0.25s ease}
+
+    .card-3d .title{font-weight:800;font-size:20px}
+    .card-3d .meta{color:var(--muted);font-size:0.92rem}
+    .card-3d .chip{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.25);font-weight:700}
+
+    /* We'll position several cards around the Y axis */
+    /* base positions (JS will rotate the carousel) */
+
+    /* Projects section */
+    .projects-wrap{padding:40px 6%;background:linear-gradient(180deg,transparent, rgba(255,255,255,0.02));}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+
+    .lang-tile{
+      border-radius:12px;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;display:flex;flex-direction:column;gap:10px;align-items:flex-start
+    }
+    .lang-tile:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(3,10,30,0.6)}
+    .lang-tile .lang-name{font-weight:800;font-size:18px}
+    .lang-tile .count{color:var(--muted);font-size:0.9rem}
+
+    /* Right-hand project list panel */
+    .panel{position:fixed;right:24px;top:120px;width:380px;max-height:70vh;padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(2,6,23,0.6);overflow:auto}
+    .panel h3{margin:0 0 8px}
+    .project-item{padding:12px;border-radius:10px;margin-bottom:12px;background:rgba(0,0,0,0.25);display:flex;justify-content:space-between;align-items:center}
+    .project-item .left{max-width:70%}
+    .project-item .title{font-weight:700}
+    .project-item .meta{color:var(--muted);font-size:0.9rem}
+    .project-item button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    /* small device adjustments */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;gap:20px}
+      .scene{order:2;margin-top:8px}
+      .panel{position:static;width:auto;margin:18px 6%;max-height:none}
+    }
+
+    /* Add tiny floating badges */
+    .badge{position:absolute;right:12px;top:12px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--vibrant-blue),var(--electric-green));color:#042233;font-weight:800}
+
+    /* form for admin adding languages/projects */
+    .mini-form{display:flex;gap:8px;margin-top:12px}
+    .mini-form input, .mini-form select{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)}
+    .mini-form button{padding:8px 12px;border-radius:8px;border:none;background:var(--electric-green);color:#042233;font-weight:700}
+
+    /* subtle animated underline under section title */
+    .section-title{display:flex;align-items:center;gap:12px}
+    .section-title h2{margin:0}
+    .section-title .underline{height:4px;width:80px;border-radius:999px;background:linear-gradient(90deg,var(--vibrant-blue),var(--electric-green));}
+
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <a href="#" class="logo">
-            <i class="fas fa-code"></i>Kode <span>Kraft</span>
-        </a>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Process</a></li>
-                <li><a href="#">Projects</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-        <button class="cta-button">Get Started</button>
-    </header>
+  <header>
+    <div class="logo"><i class="fas fa-code"></i> Kode <span>Kraft</span></div>
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <button class="btn" id="openAdd">+ Add</button>
+    </nav>
+  </header>
 
-    <!-- Hero Section -->
+  <main>
     <section class="hero">
-        <div class="hero-content">
-            <h1>Struggling with your <span>Final Year Project?</span></h1>
-            <p>Kode Kraft provides complete final year project support — from idea selection to coding, reports, and presentations. Let's make your project journey easier together!</p>
-            <div class="hero-buttons">
-                <button class="cta-button">Get Expert Support</button>
-                <button class="secondary-button">View Projects</button>
+      <div class="hero-left">
+        <h1>Final Year Projects, <span>3D Marketplace</span> — pick, buy & customise</h1>
+        <p>Designed for college students. Browse by language, preview live project cards with 3D tilt, and attach your own student projects. Click any language to open the project list on the right.</p>
+        <div class="hero-cta">
+          <button class="btn">Explore Projects</button>
+          <button class="btn secondary">How it works</button>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="section-title"><h2 style="color:var(--text-light)">Trending & Featured</h2><div class="underline"></div></div>
+          <div style="height:18px"></div>
+          <div class="scene" aria-hidden="true">
+            <div class="carousel" id="carousel">
+              <!-- three 3d cards will be inserted by JS -->
             </div>
+            <div class="badge">Best sellers</div>
+          </div>
         </div>
-        <div class="hero-animation">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+      </div>
+
+      <div class="scene" style="justify-content:flex-end">
+        <div style="width:100%;max-width:520px">
+          <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Search projects</div>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <input id="searchInput" placeholder="Search by title or keyword" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)" />
+            <button class="btn" id="searchBtn">Go</button>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center">
+            <div style="flex:1">
+              <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Popular Languages</div>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+                <div class="lang-tile" data-lang="python"><div class="lang-name">Python</div><div class="count">18 projects</div></div>
+                <div class="lang-tile" data-lang="php"><div class="lang-name">PHP</div><div class="count">12 projects</div></div>
+                <div class="lang-tile" data-lang="java"><div class="lang-name">Java</div><div class="count">8 projects</div></div>
+                <div class="lang-tile" data-lang="ml"><div class="lang-name">ML / AI</div><div class="count">6 projects</div></div>
+              </div>
+            </div>
+          </div>
+
         </div>
+      </div>
+
     </section>
 
-    <!-- Services Section -->
-    <section class="services">
-        <div class="section-title">
-            <h2>Our Project Support Services</h2>
-            <p>We offer comprehensive assistance to make your final year project stand out and impress your evaluators.</p>
+    <section class="projects-wrap" id="projects">
+      <div class="container">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="section-title"><h2>All Languages</h2><div class="underline"></div></div>
+          <div style="color:var(--muted);font-weight:700">Click a language to view available projects on the right.</div>
         </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-lightbulb"></i>
-                </div>
-                <h3>Idea Selection</h3>
-                <p>Get help choosing the perfect project idea that aligns with your skills, interests, and industry trends.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>Coding & Development</h3>
-                <p>Expert guidance in coding with clean, efficient, and well-documented source code for your project.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <h3>Report Assistance</h3>
-                <p>Professional help in structuring, writing, and formatting your project documentation and reports.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-desktop"></i>
-                </div>
-                <h3>Presentation Support</h3>
-                <p>Create impactful presentations with our guidance on content, design, and delivery techniques.</p>
-            </div>
+
+        <div style="height:18px"></div>
+        <div class="grid" id="languagesGrid">
+          <!-- language tiles generated by JS -->
         </div>
+
+        <div style="margin-top:18px">
+          <div style="color:var(--muted);font-weight:700">Admin / Add language</div>
+          <div class="mini-form" id="addLangForm">
+            <input type="text" id="newLangName" placeholder="New language (eg. Node.js)" />
+            <button id="addLangBtn">Add Language</button>
+          </div>
+        </div>
+
+      </div>
     </section>
 
-    <!-- Process Section -->
-    <section class="process">
-        <div class="section-title">
-            <h2>Our Simple 4-Step Process</h2>
-            <p>We've streamlined our approach to ensure you get the best support efficiently.</p>
+    <section style="padding:40px 6% 120px;background:transparent" id="contact">
+      <div class="container">
+        <div style="display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+          <div>
+            <h2>Want to list a student's project?</h2>
+            <p style="color:var(--muted)">Use the form to the right (or the Add button top-right) to attach project details. This demo stores data in-memory — integrate with your backend DB for persistence.</p>
+          </div>
+          <div style="min-width:320px;max-width:420px;background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
+            <div style="font-weight:800;margin-bottom:8px">Add Project</div>
+            <div class="mini-form" style="flex-direction:column">
+              <input id="projTitle" placeholder="Project title (eg. Face Recognition)"/>
+              <input id="projAuthor" placeholder="Student name"/>
+              <select id="projLang">
+                <option value="python">Python</option>
+                <option value="php">PHP</option>
+                <option value="java">Java</option>
+                <option value="ml">ML / AI</option>
+              </select>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button id="addProjBtn" style="flex:1">Add Project</button>
+                <button id="clearBtn" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.04)">Clear</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="process-steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Consultation</h3>
-                <p>Discuss your requirements and project goals</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Planning</h3>
-                <p>Create a customized project roadmap</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Development</h3>
-                <p>Implement the project with expert guidance</p>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <h3>Delivery</h3>
-                <p>Submit your completed project with confidence</p>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <h2>Ready to Make Your Project Stand Out?</h2>
-        <p>Don't let your final year project stress you out. Let our experts help you create an impressive project that showcases your skills and knowledge.</p>
-        <button class="cta-button">Start Your Project Today</button>
-    </section>
+  </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Kode Kraft</h3>
-                <p>Providing exceptional final year project support to students worldwide. We help turn your ideas into impressive realities.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <a href="#">Home</a><br>
-                <a href="#">Services</a><br>
-                <a href="#">Process</a><br>
-                <a href="#">Projects</a><br>
-                <a href="#">Contact</a>
-            </div>
-            <div class="footer-column">
-                <h3>Services</h3>
-                <a href="#">Idea Selection</a><br>
-                <a href="#">Coding & Development</a><br>
-                <a href="#">Report Assistance</a><br>
-                <a href="#">Presentation Support</a><br>
-                <a href="#">Project Consultation</a>
-            </div>
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-envelope"></i> info@kodekraft.com</p>
-                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Innovation City</p>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2023 Kode Kraft. All rights reserved.</p>
-        </div>
-    </footer>
+  <!-- Right panel: project list for selected language -->
+  <aside class="panel" id="projectPanel" aria-live="polite">
+    <h3>Select a language</h3>
+    <div id="panelList" style="margin-top:14px">
+      <div style="color:var(--muted)">No language selected — pick one from the grid.</div>
+    </div>
+  </aside>
 
-    <script>
-        // Animation on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate service cards on scroll
-            const serviceCards = document.querySelectorAll('.service-card');
-            const steps = document.querySelectorAll('.step');
-            
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            
-            serviceCards.forEach(card => {
-                observer.observe(card);
-            });
-            
-            steps.forEach(step => {
-                observer.observe(step);
-            });
-            
-            // Header scroll effect
-            window.addEventListener('scroll', function() {
-                const header = document.querySelector('header');
-                if (window.scrollY > 50) {
-                    header.style.padding = '15px 5%';
-                    header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
-                } else {
-                    header.style.padding = '20px 5%';
-                    header.style.boxShadow = 'none';
-                }
-            });
-            
-            // Button click handlers
-            const ctaButtons = document.querySelectorAll('.cta-button');
-            ctaButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    alert('Thank you for your interest! Our team will contact you shortly.');
-                });
-            });
-        });
-    </script>
+  <script>
+    /***** Demo dataset (in-memory) *****/
+    const data = {
+      languages: {
+        python: {name:'Python', projects:[
+          {title:'Face Recognition Attendance', author:'A. Kumar', desc:'Face detection + DB', price:12},
+          {title:'Chatbot with NLP', author:'S. Reddy', desc:'Seq2Seq chatbot', price:10}
+        ]},
+        php: {name:'PHP', projects:[
+          {title:'E-Commerce CMS', author:'M. Singh', desc:'Shop, Orders, Admin', price:15},
+          {title:'Student Portal', author:'R. Patel', desc:'Auth + Dashboard', price:9}
+        ]},
+        java: {name:'Java', projects:[
+          {title:'Library Management', author:'N. Iyer', desc:'Swing + MySQL', price:7}
+        ]},
+        ml: {name:'ML / AI', projects:[
+          {title:'Image Classifier', author:'L. Gupta', desc:'CNN with Tensorflow', price:14}
+        ]}
+      }
+    }
+
+    /* Utility: create 3D cards for carousel */
+    function createCarousel(){
+      const carousel = document.getElementById('carousel');
+      carousel.innerHTML='';
+      const langs = Object.keys(data.languages);
+      const total = langs.length>=6?6:langs.length;
+      for(let i=0;i<total;i++){
+        const key = langs[i];
+        const lang = data.languages[key];
+        const el = document.createElement('div');
+        el.className='card-3d';
+        // position each card around the Y axis
+        const angle = (360/total)*i;
+        el.style.transform=`translate(-50%,-50%) rotateY(${angle}deg) translateZ(360px)`;
+        el.innerHTML=`
+          <div style=\"display:flex;justify-content:space-between;align-items:center\">
+            <div class=\"title\">${lang.name}</div>
+            <div class=\"chip\">${lang.projects.length} P</div>
+          </div>
+          <div style=\"color:var(--muted);margin-top:8px;font-size:0.95rem\">Top projects & student favourites</div>
+          <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:14px\">
+            <div style=\"font-weight:800\">From $${lang.projects[0]?.price ?? 5}</div>
+            <button onclick=\"openPanel('${key}')\" style=\"padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light);cursor:pointer\">View</button>
+          </div>
+        `;
+        carousel.appendChild(el);
+      }
+    }
+
+    /* build languages grid */
+    function buildLangGrid(){
+      const grid = document.getElementById('languagesGrid');
+      grid.innerHTML='';
+      Object.keys(data.languages).forEach(key=>{
+        const lang = data.languages[key];
+        const tile = document.createElement('div');
+        tile.className='lang-tile';
+        tile.dataset.lang = key;
+        tile.innerHTML=`<div class=\"lang-name\">${lang.name}</div><div class=\"count\">${lang.projects.length} projects</div>`;
+        tile.addEventListener('click', ()=> openPanel(key));
+        grid.appendChild(tile);
+      })
+    }
+
+    /* Open right-side panel with projects for language */
+    function openPanel(langKey){
+      const panel = document.getElementById('projectPanel');
+      const list = document.getElementById('panelList');
+      const lang = data.languages[langKey];
+      panel.querySelector('h3').textContent = lang.name + ' — Projects';
+      list.innerHTML = '';
+      if(!lang.projects.length){
+        list.innerHTML='<div style="color:var(--muted)">No projects yet — add one below.</div>'
+      } else {
+        lang.projects.forEach((p,idx)=>{
+          const item = document.createElement('div');
+          item.className='project-item';
+          item.innerHTML = `<div class=\"left\"><div class=\"title\">${p.title}</div><div class=\"meta\">by ${p.author} • ${p.desc}</div></div><div><button onclick=\"buyProject('${langKey}',${idx})\">Buy</button></div>`;
+          list.appendChild(item);
+        })
+      }
+      // highlight selected language tiles
+      document.querySelectorAll('.lang-tile').forEach(t=>t.style.boxShadow='none');
+      const sel = document.querySelector(`.lang-tile[data-lang=\"${langKey}\"]`);
+      if(sel) sel.style.boxShadow='0 18px 46px rgba(1,20,40,0.6)';
+    }
+
+    function buyProject(lang, idx){
+      const p = data.languages[lang].projects[idx];
+      alert(`You chose to buy:\n${p.title} — $${p.price}\nContact seller: ${p.author}`);
+    }
+
+    /* Admin: add language */
+    document.getElementById('addLangBtn').addEventListener('click', ()=>{
+      const name = document.getElementById('newLangName').value.trim();
+      if(!name) return alert('Enter a language name');
+      const key = name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+      if(data.languages[key]) return alert('Language already exists');
+      data.languages[key] = {name:name, projects:[]};
+      buildLangGrid(); createCarousel(); document.getElementById('newLangName').value='';
+    });
+
+    /* Admin: add project */
+    document.getElementById('addProjBtn').addEventListener('click', ()=>{
+      const title = document.getElementById('projTitle').value.trim();
+      const author = document.getElementById('projAuthor').value.trim() || 'Student';
+      const lang = document.getElementById('projLang').value;
+      if(!title) return alert('Provide a project title');
+      if(!data.languages[lang]) data.languages[lang]={name:lang,projects:[]};
+      data.languages[lang].projects.unshift({title,author,desc:'Student project',price:9});
+      document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';
+      buildLangGrid(); createCarousel(); openPanel(lang);
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', ()=>{document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';});
+
+    // search
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if(!q) return alert('Enter search term');
+      let found=null;
+      Object.keys(data.languages).forEach(k=>{
+        data.languages[k].projects.forEach((p,idx)=>{ if(p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)) found={k,idx} });
+      });
+      if(found) openPanel(found.k);
+      else alert('No projects matched your search');
+    });
+
+    // small carousel rotation using mouse drag
+    (function carouselControl(){
+      const carousel = document.getElementById('carousel');
+      let rotY = 0, isDown=false, startX=0, startRot=0;
+      carousel.addEventListener('mousedown', e=>{isDown=true;startX=e.clientX;startRot=rotY});
+      window.addEventListener('mousemove', e=>{ if(!isDown) return; const dx = e.clientX-startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; });
+      window.addEventListener('mouseup', ()=> isDown=false);
+      // touch support
+      carousel.addEventListener('touchstart', e=>{isDown=true;startX=e.touches[0].clientX;startRot=rotY});
+      window.addEventListener('touchmove', e=>{ if(!isDown) return; const dx = e.touches[0].clientX-startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; });
+      window.addEventListener('touchend', ()=> isDown=false);
+    })();
+
+    // tilt effect on lang tiles
+    function addTilt(el){
+      el.addEventListener('mousemove', (e)=>{
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left)/r.width;
+        const py = (e.clientY - r.top)/r.height;
+        const rotY = (px-0.5)*12; const rotX = (0.5-py)*8;
+        el.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`;
+      });
+      el.addEventListener('mouseleave', ()=> el.style.transform='translateY(0)');
+    }
+
+    // apply tilt to initial static tiles
+    function attachTileTilt(){
+      document.querySelectorAll('.lang-tile').forEach(addTilt);
+    }
+
+    // small helper to open 'add language' modal
+    document.getElementById('openAdd').addEventListener('click', ()=>{
+      const name = prompt('Add language name (eg: Node.js)');
+      if(!name) return; document.getElementById('newLangName').value = name; document.getElementById('addLangBtn').click();
+    });
+
+    // initial render
+    buildLangGrid(); createCarousel(); attachTileTilt();
+
+    // rebuild tilt listeners after DOM changes (e.g. new tiles)
+    const observer = new MutationObserver(()=>attachTileTilt());
+    observer.observe(document.getElementById('languagesGrid'),{childList:true})
+
+  </script>
 </body>
 </html>
