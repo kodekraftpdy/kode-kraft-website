@@ -350,6 +350,17 @@
     });
 
     // small carousel rotation using mouse drag
+    /* Enable scroll-wheel rotation */
+    (function carouselScroll(){
+      const carousel = document.getElementById('carousel');
+      let rotY = 0;
+      carousel.addEventListener('wheel', (e)=>{
+        e.preventDefault();
+        rotY += e.deltaY * 0.25;
+        carousel.style.transform = `rotateY(${rotY}deg)`;
+      }, {passive:false});
+    })();
+
     (function carouselControl(){
       const carousel = document.getElementById('carousel');
       let rotY = 0, isDown=false, startX=0, startRot=0;
