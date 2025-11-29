@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kode Kraft — 3D Projects Marketplace</title>
+  <title>Kode Kraft — 3D Projects Marketplace (Firebase)</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    /* === Color tokens taken from your provided styles === */
+    /* === Theme tokens === */
     :root{
-      --deep-blue:#0056B3; /* for accents */
+      --deep-blue:#0056B3;
       --vibrant-blue:#007BFF;
       --electric-green:#00D2B8;
       --dark-bg:#0a192f;
@@ -17,11 +17,9 @@
       --muted:#8892b0;
     }
 
-    /* Global reset + internal font fallback */
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,system-ui,-apple-system,\"Helvetica Neue\",Arial}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,system-ui,-apple-system,"Helvetica Neue",Arial}
     body{background:linear-gradient(180deg,#071027 0%, var(--dark-bg) 60%);color:var(--text-light);}
-
     a{color:inherit}
 
     header{position:sticky;top:0;z-index:40;padding:16px 6%;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(10,25,47,0.65),transparent);backdrop-filter:blur(6px)}
@@ -33,6 +31,9 @@
     .nav a{padding:8px 12px;border-radius:8px;font-weight:600;color:var(--muted);text-decoration:none}
     .nav a:hover{color:var(--text-light);background:rgba(255,255,255,0.03)}
 
+    .container{width:90%;max-width:1140px;margin:0 auto}
+
+    /* Reuse previous hero / 3D layout (student view) */
     .hero{padding:80px 6% 40px;display:grid;grid-template-columns:1fr 520px;gap:30px;align-items:center}
     .hero-left{max-width:720px}
     .hero h1{font-size:44px;line-height:1.02;margin:0 0 12px}
@@ -42,62 +43,51 @@
     .btn{background:linear-gradient(45deg,var(--vibrant-blue),var(--electric-green));border:none;color:#042233;padding:12px 22px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,210,184,0.12)}
     .btn.secondary{background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--text-light)}
 
-    /* 3D showcase area */
     .scene{height:420px;display:flex;align-items:center;justify-content:center;perspective:1400px}
-
-    .carousel{
-      width:420px;height:300px;transform-style:preserve-3d;position:relative;transition:transform 0.8s cubic-bezier(.2,.9,.3,1);
-    }
-
-    .card-3d{
-      position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate(-50%,-50%);width:320px;height:220px;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(2,6,23,0.6);background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;justify-content:space-between;color:var(--text-light);transition:transform 0.25s ease,box-shadow 0.25s ease}
+    .carousel{width:420px;height:300px;transform-style:preserve-3d;position:relative;transition:transform 0.8s cubic-bezier(.2,.9,.3,1);}
+    .card-3d{position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate(-50%,-50%);width:320px;height:220px;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(2,6,23,0.6);background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;justify-content:space-between;color:var(--text-light);transition:transform 0.25s ease,box-shadow 0.25s ease}
 
     .card-3d .title{font-weight:800;font-size:20px}
     .card-3d .meta{color:var(--muted);font-size:0.92rem}
     .card-3d .chip{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.25);font-weight:700}
 
-    /* We'll position several cards around the Y axis */
-    /* base positions (JS will rotate the carousel) */
-
-    /* Projects section */
     .projects-wrap{padding:40px 6%;background:linear-gradient(180deg,transparent, rgba(255,255,255,0.02));}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
-
-    .lang-tile{
-      border-radius:12px;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;display:flex;flex-direction:column;gap:10px;align-items:flex-start
-    }
+    .lang-tile{border-radius:12px;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
     .lang-tile:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(3,10,30,0.6)}
     .lang-tile .lang-name{font-weight:800;font-size:18px}
     .lang-tile .count{color:var(--muted);font-size:0.9rem}
 
-    /* Right-hand project list panel */
     .panel{position:fixed;right:24px;top:120px;width:380px;max-height:70vh;padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(2,6,23,0.6);overflow:auto}
     .panel h3{margin:0 0 8px}
     .project-item{padding:12px;border-radius:10px;margin-bottom:12px;background:rgba(0,0,0,0.25);display:flex;justify-content:space-between;align-items:center}
     .project-item .left{max-width:70%}
     .project-item .title{font-weight:700}
     .project-item .meta{color:var(--muted);font-size:0.9rem}
-    .project-item button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+    .project-item a{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;display:inline-block;color:var(--text-light)}
 
-    /* small device adjustments */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr;gap:20px}
-      .scene{order:2;margin-top:8px}
-      .panel{position:static;width:auto;margin:18px 6%;max-height:none}
-    }
+    @media (max-width:980px){ .hero{grid-template-columns:1fr;gap:20px}.scene{order:2;margin-top:8px}.panel{position:static;width:auto;margin:18px 6%;max-height:none} }
 
-    /* Add tiny floating badges */
     .badge{position:absolute;right:12px;top:12px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--vibrant-blue),var(--electric-green));color:#042233;font-weight:800}
 
-    /* form for admin adding languages/projects */
     .mini-form{display:flex;gap:8px;margin-top:12px}
     .mini-form input, .mini-form select{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)}
     .mini-form button{padding:8px 12px;border-radius:8px;border:none;background:var(--electric-green);color:#042233;font-weight:700}
 
-    /* subtle animated underline under section title */
     .section-title{display:flex;align-items:center;gap:12px}
     .section-title h2{margin:0}
     .section-title .underline{height:4px;width:80px;border-radius:999px;background:linear-gradient(90deg,var(--vibrant-blue),var(--electric-green));}
+
+    /* Admin styles */
+    .admin-wrap{padding:40px 6%;min-height:80vh}
+    .card{background:var(--card-bg);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+    .form-row{display:flex;gap:8px}
+    .form-row input,.form-row select,.form-row textarea{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)}
+    .table{margin-top:12px}
+    .table .row{display:flex;gap:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);align-items:center}
+    .table .row div{flex:1}
+
+    .hidden{display:none}
 
   </style>
 </head>
@@ -105,30 +95,29 @@
   <header>
     <div class="logo"><i class="fas fa-code"></i> Kode <span>Kraft</span></div>
     <nav class="nav">
-      <a href="#">Home</a>
+      <a href="#home">Home</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
-      <button class="btn" id="openAdd">+ Add</button>
+      <a href="#admin">Admin</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
+  <main id="app">
+    <!-- Student Landing / Index (shown when hash is #home or default) -->
+    <section id="studentView" class="hero">
       <div class="hero-left">
         <h1>Final Year Projects, <span>3D Marketplace</span> — pick, buy & customise</h1>
-        <p>Designed for college students. Browse by language, preview live project cards with 3D tilt, and attach your own student projects. Click any language to open the project list on the right.</p>
+        <p>Designed for college students. Browse by language, preview live project cards with 3D tilt, and suggest custom projects on the contact page.</p>
         <div class="hero-cta">
-          <button class="btn">Explore Projects</button>
-          <button class="btn secondary">How it works</button>
+          <button class="btn" onclick="location.hash='#projects'">Explore Projects</button>
+          <button class="btn secondary" onclick="alert('How it works: Browse languages → view projects → download PDF from Drive or contact admin')">How it works</button>
         </div>
 
         <div style="margin-top:28px">
           <div class="section-title"><h2 style="color:var(--text-light)">Trending & Featured</h2><div class="underline"></div></div>
           <div style="height:18px"></div>
           <div class="scene" aria-hidden="true">
-            <div class="carousel" id="carousel">
-              <!-- three 3d cards will be inserted by JS -->
-            </div>
+            <div class="carousel" id="carousel"></div>
             <div class="badge">Best sellers</div>
           </div>
         </div>
@@ -146,20 +135,20 @@
             <div style="flex:1">
               <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Popular Languages</div>
               <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
-                <div class="lang-tile" data-lang="python"><div class="lang-name">Python</div><div class="count">18 projects</div></div>
-                <div class="lang-tile" data-lang="php"><div class="lang-name">PHP</div><div class="count">12 projects</div></div>
-                <div class="lang-tile" data-lang="java"><div class="lang-name">Java</div><div class="count">8 projects</div></div>
-                <div class="lang-tile" data-lang="ml"><div class="lang-name">ML / AI</div><div class="count">6 projects</div></div>
+                <div class="lang-tile" data-lang="python"><div class="lang-name">Python</div><div class="count">—</div></div>
+                <div class="lang-tile" data-lang="php"><div class="lang-name">PHP</div><div class="count">—</div></div>
+                <div class="lang-tile" data-lang="java"><div class="lang-name">Java</div><div class="count">—</div></div>
+                <div class="lang-tile" data-lang="ml"><div class="lang-name">ML / AI</div><div class="count">—</div></div>
               </div>
             </div>
           </div>
 
         </div>
       </div>
-
     </section>
 
-    <section class="projects-wrap" id="projects">
+    <!-- Projects Page (student) -->
+    <section id="projectsView" class="projects-wrap hidden">
       <div class="container">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
           <div class="section-title"><h2>All Languages</h2><div class="underline"></div></div>
@@ -167,241 +156,425 @@
         </div>
 
         <div style="height:18px"></div>
-        <div class="grid" id="languagesGrid">
-          <!-- language tiles generated by JS -->
-        </div>
-
-        <div style="margin-top:18px">
-          <div style="color:var(--muted);font-weight:700">Admin / Add language</div>
-          <div class="mini-form" id="addLangForm">
-            <input type="text" id="newLangName" placeholder="New language (eg. Node.js)" />
-            <button id="addLangBtn">Add Language</button>
-          </div>
-        </div>
-
+        <div class="grid" id="languagesGrid"></div>
       </div>
     </section>
 
-    <section style="padding:40px 6% 120px;background:transparent" id="contact">
+    <!-- Contact / Suggestions -->
+    <section id="contactView" class="hidden" style="padding:40px 6% 120px;background:transparent">
       <div class="container">
-        <div style="display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap">
-          <div>
-            <h2>Want to list a student's project?</h2>
-            <p style="color:var(--muted)">Use the form to the right (or the Add button top-right) to attach project details. This demo stores data in-memory — integrate with your backend DB for persistence.</p>
+        <div style="display:flex;gap:24px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap">
+          <div style="flex:1;min-width:280px">
+            <h2>Contact & Suggest a Project</h2>
+            <p style="color:var(--muted)">Ask us anything or suggest a custom project idea. We will review and contact you.</p>
+
+            <div style="margin-top:14px">
+              <div style="font-weight:700">Contact Info</div>
+              <div style="color:var(--muted);margin-top:8px">Phone: <span id="contactPhone">+1 (555) 123-4567</span></div>
+              <div style="color:var(--muted);margin-top:6px">Email: <span id="contactEmail">info@kodekraft.com</span></div>
+            </div>
+
+            <div style="margin-top:20px">
+              <div style="font-weight:700;margin-bottom:8px">Suggest a Project</div>
+              <div style="display:flex;flex-direction:column;gap:8px;max-width:520px">
+                <input id="s_name" placeholder="Your name" />
+                <input id="s_email" placeholder="Your email" />
+                <input id="s_phone" placeholder="Phone (optional)" />
+                <textarea id="s_idea" placeholder="Describe your project idea" style="min-height:120px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)"></textarea>
+                <div style="display:flex;gap:8px">
+                  <button class="btn" id="submitSuggestion">Submit</button>
+                  <button class="btn secondary" id="clearSuggestion">Clear</button>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div style="min-width:320px;max-width:420px;background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
-            <div style="font-weight:800;margin-bottom:8px">Add Project</div>
-            <div class="mini-form" style="flex-direction:column">
-              <input id="projTitle" placeholder="Project title (eg. Face Recognition)"/>
-              <input id="projAuthor" placeholder="Student name"/>
-              <select id="projLang">
-                <option value="python">Python</option>
-                <option value="php">PHP</option>
-                <option value="java">Java</option>
-                <option value="ml">ML / AI</option>
-              </select>
-              <div style="display:flex;gap:8px;margin-top:8px">
-                <button id="addProjBtn" style="flex:1">Add Project</button>
-                <button id="clearBtn" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.04)">Clear</button>
+            <div style="font-weight:800;margin-bottom:8px">Quick Links</div>
+            <a href="#projects">Browse Projects</a><br>
+            <a href="#home">Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shared right panel for project list -->
+    <aside class="panel" id="projectPanel" aria-live="polite">
+      <h3>Select a language</h3>
+      <div id="panelList" style="margin-top:14px">
+        <div style="color:var(--muted)">No language selected — pick one from the grid.</div>
+      </div>
+    </aside>
+
+    <!-- Admin area: this single-page app will show admin UI when hash=#admin and authenticated -->
+    <section id="adminView" class="hidden admin-wrap">
+      <div class="container">
+        <div class="card" id="adminLoginCard">
+          <h2>Admin Login</h2>
+          <div style="margin-top:12px;display:flex;gap:8px;max-width:480px">
+            <input id="adminEmail" placeholder="admin email" />
+            <input id="adminPassword" placeholder="password" type="password" />
+            <button class="btn" id="adminLoginBtn">Login</button>
+          </div>
+          <div style="color:var(--muted);margin-top:8px">Use Firebase Authentication admin user created in your console.</div>
+        </div>
+
+        <div id="adminDashboard" class="hidden" style="margin-top:18px">
+          <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+            <h2>Admin Dashboard</h2>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn" id="adminLogout">Logout</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:12px">
+            <div>
+              <div class="card">
+                <h3>Languages</h3>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <input id="langName" placeholder="Language name (eg: Node.js)" />
+                  <button class="btn" id="addLanguageBtn">Add</button>
+                </div>
+                <div class="table" id="languageList"></div>
+              </div>
+
+              <div class="card" style="margin-top:12px">
+                <h3>Projects</h3>
+                <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+                  <input id="projTitle" placeholder="Title" />
+                  <input id="projAuthor" placeholder="Author" />
+                </div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <select id="projLangSelect"></select>
+                  <input id="projPrice" placeholder="Price" />
+                </div>
+                <textarea id="projDesc" placeholder="Short description"></textarea>
+                <input id="projDriveUrl" placeholder="Google Drive URL (share link)" />
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn" id="addProjectBtn">Add Project</button>
+                </div>
+                <div class="table" id="projectsList"></div>
+              </div>
+
+              <div class="card" style="margin-top:12px">
+                <h3>Student Suggestions</h3>
+                <div class="table" id="suggestionsList"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card">
+                <h3>Controls</h3>
+                <div style="margin-top:8px">Carousel languages (order matters) — click add to include in carousel</div>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <select id="carouselLangSelect"></select>
+                  <button class="btn" id="addToCarouselBtn">Add to Carousel</button>
+                </div>
+                <div id="carouselOrder" style="margin-top:12px"></div>
+                <div style="margin-top:12px;color:var(--muted)">Note: Projects PDF files are provided by you via Google Drive URL — students will open Drive link to view/download.</div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </section>
 
   </main>
 
-  <!-- Right panel: project list for selected language -->
-  <aside class="panel" id="projectPanel" aria-live="polite">
-    <h3>Select a language</h3>
-    <div id="panelList" style="margin-top:14px">
-      <div style="color:var(--muted)">No language selected — pick one from the grid.</div>
-    </div>
-  </aside>
+  <!-- Firebase SDK (compat for simpler migration) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+  <!-- Note: We're not using Firebase Storage for PDFs; PDFs will be Drive URLs provided by admin -->
 
   <script>
-    /***** Demo dataset (in-memory) *****/
-    const data = {
-      languages: {
-        python: {name:'Python', projects:[
-          {title:'Face Recognition Attendance', author:'A. Kumar', desc:'Face detection + DB', price:12},
-          {title:'Chatbot with NLP', author:'S. Reddy', desc:'Seq2Seq chatbot', price:10}
-        ]},
-        php: {name:'PHP', projects:[
-          {title:'E-Commerce CMS', author:'M. Singh', desc:'Shop, Orders, Admin', price:15},
-          {title:'Student Portal', author:'R. Patel', desc:'Auth + Dashboard', price:9}
-        ]},
-        java: {name:'Java', projects:[
-          {title:'Library Management', author:'N. Iyer', desc:'Swing + MySQL', price:7}
-        ]},
-        ml: {name:'ML / AI', projects:[
-          {title:'Image Classifier', author:'L. Gupta', desc:'CNN with Tensorflow', price:14}
-        ]}
+    /*********** PASTE YOUR FIREBASE CONFIG BELOW ***********
+     * Create a Firebase project (console.firebase.google.com)
+     * Enable Firestore and Auth (Email/Password)
+     * Create an admin user in Authentication
+     * Then paste the web app config here (apiKey, authDomain, projectId...)
+     */
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyB-O8vrpKUYW8a68-IsLKZ_kGfu4iNNtKw",
+    authDomain: "kodekraft-projects.firebaseapp.com",
+    projectId: "kodekraft-projects",
+    storageBucket: "kodekraft-projects.firebasestorage.app",
+    messagingSenderId: "573537190204",
+    appId: "1:573537190204:web:ab78dc9490e935dafa9e39"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Simple router
+    function router(){
+      const hash = location.hash || '#home';
+      document.getElementById('studentView').classList.add('hidden');
+      document.getElementById('projectsView').classList.add('hidden');
+      document.getElementById('contactView').classList.add('hidden');
+      document.getElementById('adminView').classList.add('hidden');
+      if(hash.startsWith('#admin')){
+        document.getElementById('adminView').classList.remove('hidden');
+        checkAuthState();
+      } else if(hash.startsWith('#projects')){
+        document.getElementById('projectsView').classList.remove('hidden');
+        loadLanguagesGrid();
+      } else if(hash.startsWith('#contact')){
+        document.getElementById('contactView').classList.remove('hidden');
+      } else {
+        document.getElementById('studentView').classList.remove('hidden');
+        refreshCarousel(); loadLanguagesGrid();
       }
     }
+    window.addEventListener('hashchange', router);
+    window.addEventListener('load', router);
 
-    /* Utility: create 3D cards for carousel */
-    function createCarousel(){
+    /************** Student-side functionality (read only) **************/
+    async function refreshCarousel(){
       const carousel = document.getElementById('carousel');
-      carousel.innerHTML='';
-      const langs = Object.keys(data.languages);
-      const total = langs.length>=6?6:langs.length;
-      for(let i=0;i<total;i++){
-        const key = langs[i];
-        const lang = data.languages[key];
-        const el = document.createElement('div');
-        el.className='card-3d';
-        // position each card around the Y axis
-        const angle = (360/total)*i;
-        el.style.transform=`translate(-50%,-50%) rotateY(${angle}deg) translateZ(360px)`;
-        el.innerHTML=`
-          <div style=\"display:flex;justify-content:space-between;align-items:center\">
-            <div class=\"title\">${lang.name}</div>
-            <div class=\"chip\">${lang.projects.length} P</div>
-          </div>
-          <div style=\"color:var(--muted);margin-top:8px;font-size:0.95rem\">Top projects & student favourites</div>
-          <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:14px\">
-            <div style=\"font-weight:800\">From $${lang.projects[0]?.price ?? 5}</div>
-            <button onclick=\"openPanel('${key}')\" style=\"padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light);cursor:pointer\">View</button>
-          </div>
-        `;
-        carousel.appendChild(el);
+      carousel.innerHTML = '';
+      // get carousel order from settings document
+      const settingsDoc = await db.collection('settings').doc('carousel').get().catch(()=>null);
+      let order = [];
+      if(settingsDoc && settingsDoc.exists){ order = settingsDoc.data().languages || []; }
+      // if empty, pick first 5 languages
+      if(order.length===0){
+        const langsSnap = await db.collection('languages').limit(6).get();
+        order = langsSnap.docs.map(d=>d.id);
       }
+      const total = Math.min(order.length,6) || 1;
+      order.slice(0,total).forEach((key,i)=>{
+        db.collection('languages').doc(key).get().then(doc=>{
+          if(!doc.exists) return;
+          const lang = doc.data();
+          const el = document.createElement('div'); el.className='card-3d';
+          const angle = (360/total)*i;
+          el.style.transform = `translate(-50%,-50%) rotateY(${angle}deg) translateZ(360px)`;
+          el.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class=\"title\">${lang.name}</div>
+              <div class=\"chip\">${lang.count || 0} P</div>
+            </div>
+            <div style=\"color:var(--muted);margin-top:8px;font-size:0.95rem\">Top projects & student favourites</div>
+            <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:14px\">
+              <div style=\"font-weight:800\">From $${lang.minPrice || 5}</div>
+              <button onclick=\"openPanel('${key}')\" style=\"padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light);cursor:pointer\">View</button>
+            </div>
+          `;
+          carousel.appendChild(el);
+        })
+      });
     }
 
-    /* build languages grid */
-    function buildLangGrid(){
+    async function loadLanguagesGrid(){
       const grid = document.getElementById('languagesGrid');
-      grid.innerHTML='';
-      Object.keys(data.languages).forEach(key=>{
-        const lang = data.languages[key];
-        const tile = document.createElement('div');
-        tile.className='lang-tile';
-        tile.dataset.lang = key;
-        tile.innerHTML=`<div class=\"lang-name\">${lang.name}</div><div class=\"count\">${lang.projects.length} projects</div>`;
+      grid.innerHTML = '';
+      const snap = await db.collection('languages').orderBy('createdAt','asc').get();
+      snap.forEach(doc=>{
+        const key = doc.id; const lang = doc.data();
+        const tile = document.createElement('div'); tile.className='lang-tile'; tile.dataset.lang = key;
+        tile.innerHTML = `<div class=\"lang-name\">${lang.name}</div><div class=\"count\">${lang.count || 0} projects</div>`;
         tile.addEventListener('click', ()=> openPanel(key));
         grid.appendChild(tile);
-      })
+      });
     }
 
-    /* Open right-side panel with projects for language */
-    function openPanel(langKey){
+    async function openPanel(langKey){
       const panel = document.getElementById('projectPanel');
       const list = document.getElementById('panelList');
-      const lang = data.languages[langKey];
+      const langDoc = await db.collection('languages').doc(langKey).get();
+      if(!langDoc.exists){ list.innerHTML='<div style="color:var(--muted)\">No such language.</div>'; return; }
+      const lang = langDoc.data();
       panel.querySelector('h3').textContent = lang.name + ' — Projects';
       list.innerHTML = '';
-      if(!lang.projects.length){
-        list.innerHTML='<div style="color:var(--muted)">No projects yet — add one below.</div>'
-      } else {
-        lang.projects.forEach((p,idx)=>{
-          const item = document.createElement('div');
-          item.className='project-item';
-          item.innerHTML = `<div class=\"left\"><div class=\"title\">${p.title}</div><div class=\"meta\">by ${p.author} • ${p.desc}</div></div><div><button onclick=\"buyProject('${langKey}',${idx})\">Buy</button></div>`;
-          list.appendChild(item);
-        })
-      }
-      // highlight selected language tiles
+      const projSnap = await db.collection('projects').where('language','==',langKey).orderBy('createdAt','desc').get();
+      if(projSnap.empty){ list.innerHTML='<div style="color:var(--muted)">No projects yet — contact admin.</div>'; return; }
+      projSnap.forEach(doc=>{
+        const p = doc.data();
+        const item = document.createElement('div'); item.className='project-item';
+        item.innerHTML = `<div class=\"left\"><div class=\"title\">${p.title}</div><div class=\"meta\">by ${p.author} • ${p.description || ''}</div></div><div><a href=\"${p.driveUrl || '#'}\" target=\"_blank\">Open PDF</a></div>`;
+        list.appendChild(item);
+      });
+      // highlight selected tile
       document.querySelectorAll('.lang-tile').forEach(t=>t.style.boxShadow='none');
       const sel = document.querySelector(`.lang-tile[data-lang=\"${langKey}\"]`);
       if(sel) sel.style.boxShadow='0 18px 46px rgba(1,20,40,0.6)';
     }
 
-    function buyProject(lang, idx){
-      const p = data.languages[lang].projects[idx];
-      alert(`You chose to buy:\n${p.title} — $${p.price}\nContact seller: ${p.author}`);
-    }
-
-    /* Admin: add language */
-    document.getElementById('addLangBtn').addEventListener('click', ()=>{
-      const name = document.getElementById('newLangName').value.trim();
-      if(!name) return alert('Enter a language name');
-      const key = name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
-      if(data.languages[key]) return alert('Language already exists');
-      data.languages[key] = {name:name, projects:[]};
-      buildLangGrid(); createCarousel(); document.getElementById('newLangName').value='';
-    });
-
-    /* Admin: add project */
-    document.getElementById('addProjBtn').addEventListener('click', ()=>{
-      const title = document.getElementById('projTitle').value.trim();
-      const author = document.getElementById('projAuthor').value.trim() || 'Student';
-      const lang = document.getElementById('projLang').value;
-      if(!title) return alert('Provide a project title');
-      if(!data.languages[lang]) data.languages[lang]={name:lang,projects:[]};
-      data.languages[lang].projects.unshift({title,author,desc:'Student project',price:9});
-      document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';
-      buildLangGrid(); createCarousel(); openPanel(lang);
-    });
-
-    document.getElementById('clearBtn').addEventListener('click', ()=>{document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';});
-
-    // search
-    document.getElementById('searchBtn').addEventListener('click', ()=>{
+    document.getElementById('searchBtn').addEventListener('click', async ()=>{
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
       if(!q) return alert('Enter search term');
-      let found=null;
-      Object.keys(data.languages).forEach(k=>{
-        data.languages[k].projects.forEach((p,idx)=>{ if(p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)) found={k,idx} });
-      });
-      if(found) openPanel(found.k);
-      else alert('No projects matched your search');
+      const results = [];
+      const snap = await db.collection('projects').get();
+      snap.forEach(doc=>{ const p = doc.data(); if((p.title && p.title.toLowerCase().includes(q)) || (p.description && p.description.toLowerCase().includes(q)) ) results.push({id:doc.id,...p}) });
+      if(results.length===0) return alert('No matches');
+      // open panel for first match's language
+      openPanel(results[0].language);
     });
 
-    // small carousel rotation using mouse drag
-    /* Enable scroll-wheel rotation */
-    (function carouselScroll(){
-      const carousel = document.getElementById('carousel');
-      let rotY = 0;
-      carousel.addEventListener('wheel', (e)=>{
-        e.preventDefault();
-        rotY += e.deltaY * 0.25;
-        carousel.style.transform = `rotateY(${rotY}deg)`;
-      }, {passive:false});
-    })();
+    /************** Contact (suggestions) **************/
+    document.getElementById('submitSuggestion').addEventListener('click', async ()=>{
+      const name = document.getElementById('s_name').value.trim();
+      const email = document.getElementById('s_email').value.trim();
+      const phone = document.getElementById('s_phone').value.trim();
+      const idea = document.getElementById('s_idea').value.trim();
+      if(!name || !email || !idea) return alert('Please provide name, email and idea');
+      await db.collection('suggestions').add({name,email,phone,idea,createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      alert('Suggestion submitted — thank you!');
+      document.getElementById('s_name').value='';document.getElementById('s_email').value='';document.getElementById('s_phone').value='';document.getElementById('s_idea').value='';
+    });
 
-    (function carouselControl(){
-      const carousel = document.getElementById('carousel');
-      let rotY = 0, isDown=false, startX=0, startRot=0;
-      carousel.addEventListener('mousedown', e=>{isDown=true;startX=e.clientX;startRot=rotY});
-      window.addEventListener('mousemove', e=>{ if(!isDown) return; const dx = e.clientX-startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; });
-      window.addEventListener('mouseup', ()=> isDown=false);
-      // touch support
-      carousel.addEventListener('touchstart', e=>{isDown=true;startX=e.touches[0].clientX;startRot=rotY});
-      window.addEventListener('touchmove', e=>{ if(!isDown) return; const dx = e.touches[0].clientX-startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; });
-      window.addEventListener('touchend', ()=> isDown=false);
-    })();
+    /************** Admin: Auth flows & dashboard **************/
+    document.getElementById('adminLoginBtn').addEventListener('click', async ()=>{
+      const email = document.getElementById('adminEmail').value.trim();
+      const pass = document.getElementById('adminPassword').value.trim();
+      if(!email || !pass) return alert('Enter email and password');
+      try{ await auth.signInWithEmailAndPassword(email, pass); }
+      catch(err){ alert('Login failed: '+err.message); }
+    });
+
+    document.getElementById('adminLogout').addEventListener('click', async ()=>{ await auth.signOut(); alert('Logged out'); location.hash='#admin'; router(); });
+
+    function checkAuthState(){
+      auth.onAuthStateChanged(user=>{
+        if(user){ showAdminDashboard(); }
+        else { showAdminLogin(); }
+      });
+    }
+
+    function showAdminLogin(){ document.getElementById('adminLoginCard').classList.remove('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); }
+    function showAdminDashboard(){ document.getElementById('adminLoginCard').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); loadAdminData(); }
+
+    async function loadAdminData(){
+      // populate languages
+      const langSelect = document.getElementById('projLangSelect'); langSelect.innerHTML='';
+      const carouselSelect = document.getElementById('carouselLangSelect'); carouselSelect.innerHTML='';
+      const langsSnap = await db.collection('languages').orderBy('createdAt').get();
+      const langList = document.getElementById('languageList'); langList.innerHTML='';
+      langsSnap.forEach(doc=>{
+        const k=doc.id; const l=doc.data();
+        // language table row
+        const row = document.createElement('div'); row.className='row';
+        row.innerHTML = `<div><strong>${l.name}</strong></div><div style=\"width:120px;\">${l.count||0} projects</div><div style=\"width:160px;\"><button onclick=\"toggleShow('`+k+`')\">Toggle Show</button> <button onclick=\"deleteLanguage('`+k+`')\">Delete</button></div>`;
+        langList.appendChild(row);
+        // select options
+        const opt = document.createElement('option'); opt.value=k; opt.textContent = l.name; langSelect.appendChild(opt);
+        const opt2 = opt.cloneNode(true); carouselSelect.appendChild(opt2);
+      });
+
+      // populate projects view
+      const projList = document.getElementById('projectsList'); projList.innerHTML='';
+      const projSnap = await db.collection('projects').orderBy('createdAt','desc').get();
+      projSnap.forEach(doc=>{
+        const p = doc.data(); const id=doc.id;
+        const row = document.createElement('div'); row.className='row';
+        row.innerHTML = `<div>${p.title}<div style=\"color:var(--muted);font-size:0.9rem\">${p.author} • ${p.language}</div></div><div style=\"width:120px\">$${p.price||0}</div><div style=\"width:160px\"><button onclick=\"editProject('`+id+`')\">Edit</button> <button onclick=\"deleteProject('`+id+`')\">Delete</button></div>`;
+        projList.appendChild(row);
+      });
+
+      // suggestions
+      const sList = document.getElementById('suggestionsList'); sList.innerHTML='';
+      const sSnap = await db.collection('suggestions').orderBy('createdAt','desc').get();
+      sSnap.forEach(doc=>{ const s=doc.data(); const id=doc.id; const row=document.createElement('div'); row.className='row'; row.innerHTML=`<div><strong>${s.name}</strong><div style=\"color:var(--muted);font-size:0.9rem\">${s.idea}<br>${s.email} ${s.phone||''}</div></div><div style=\"width:120px\"></div><div style=\"width:160px\"><button onclick=\"deleteSuggestion('`+id+`')\">Delete</button></div>`; sList.appendChild(row); });
+
+      // carousel order
+      const cDoc = await db.collection('settings').doc('carousel').get(); const order = cDoc.exists? (cDoc.data().languages || []) : [];
+      renderCarouselOrder(order);
+    }
+
+    function renderCarouselOrder(order){ const container = document.getElementById('carouselOrder'); container.innerHTML=''; order.forEach((k,i)=>{ const el=document.createElement('div'); el.className='row'; el.innerHTML = `<div>${i+1}. ${k}</div><div style=\"width:120px\"><button onclick=\"removeFromCarousel('${k}')\">Remove</button></div>`; container.appendChild(el); }); }
+
+    document.getElementById('addLanguageBtn').addEventListener('click', async ()=>{
+      const name = document.getElementById('langName').value.trim(); if(!name) return alert('Enter language name');
+      const key = name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+      await db.collection('languages').doc(key).set({name,createdAt:firebase.firestore.FieldValue.serverTimestamp(),count:0,minPrice:0,showInCarousel:true});
+      document.getElementById('langName').value=''; loadAdminData();
+    });
+
+    async function loadAdminData(){ await loadAdminDataInternal(); }
+    async function loadAdminDataInternal(){ await loadAdminDataWrapper(); }
+    async function loadAdminDataWrapper(){ await loadAdminData(); }
+    // Avoid recursion issues; simply call the main loader once at the end of auth state change.
+
+    // but we will implement direct functions now:
+    async function toggleShow(key){ const d = await db.collection('languages').doc(key).get(); const cur = d.data(); await db.collection('languages').doc(key).update({showInCarousel: !cur.showInCarousel}); loadAdminData(); refreshCarousel(); }
+    async function deleteLanguage(key){ if(!confirm('Delete language and its projects?')) return; // also delete its projects
+      const projSnap = await db.collection('projects').where('language','==',key).get(); const batch = db.batch(); projSnap.forEach(d=>batch.delete(d.ref)); batch.delete(db.collection('languages').doc(key)); await batch.commit(); loadAdminData(); refreshCarousel(); }
+
+    document.getElementById('addProjectBtn').addEventListener('click', async ()=>{
+      const title = document.getElementById('projTitle').value.trim(); const author=document.getElementById('projAuthor').value.trim()||'Student';
+      const lang=document.getElementById('projLangSelect').value; const price=parseFloat(document.getElementById('projPrice').value)||0; const desc=document.getElementById('projDesc').value.trim(); const driveUrl=document.getElementById('projDriveUrl').value.trim();
+      if(!title || !lang) return alert('Title and language required');
+      await db.collection('projects').add({title,author,language:lang,price,description:desc,driveUrl,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      // update language counts and minPrice
+      const langRef = db.collection('languages').doc(lang);
+      const langDoc = await langRef.get();
+      const prevCount = langDoc.exists ? (langDoc.data().count||0) : 0; const prevMin = langDoc.exists ? (langDoc.data().minPrice||0) : 0;
+      const newMin = prevCount===0?price:Math.min(prevMin||price,price);
+      await langRef.set({name:langDoc.exists?langDoc.data().name:lang,count:prevCount+1,minPrice:newMin,createdAt:langDoc.exists?langDoc.data().createdAt:firebase.firestore.FieldValue.serverTimestamp(),showInCarousel:true},{merge:true});
+      document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';document.getElementById('projPrice').value='';document.getElementById('projDesc').value='';document.getElementById('projDriveUrl').value='';
+      await loadAdminData(); refreshCarousel(); alert('Project added');
+    });
+
+    async function editProject(id){ alert('Edit project - feature can be added. For now delete and recreate.'); }
+    async function deleteProject(id){ if(!confirm('Delete project?')) return; await db.collection('projects').doc(id).delete(); await loadAdminData(); refreshCarousel(); }
+
+    async function deleteSuggestion(id){ if(!confirm('Delete suggestion?')) return; await db.collection('suggestions').doc(id).delete(); await loadAdminData(); }
+
+    document.getElementById('addToCarouselBtn').addEventListener('click', async ()=>{
+      const v = document.getElementById('carouselLangSelect').value; if(!v) return alert('Select language');
+      const docRef = db.collection('settings').doc('carousel'); const doc = await docRef.get(); let arr = doc.exists? (doc.data().languages||[]) : [];
+      if(!arr.includes(v)) arr.push(v);
+      await docRef.set({languages:arr}); loadAdminData(); renderCarouselOrder(arr); refreshCarousel();
+    });
+
+    async function removeFromCarousel(key){ const docRef = db.collection('settings').doc('carousel'); const doc = await docRef.get(); if(!doc.exists) return; let arr = doc.data().languages||[]; arr = arr.filter(x=>x!==key); await docRef.set({languages:arr}); renderCarouselOrder(arr); refreshCarousel(); }
+
+    // Prevent recursion mistake earlier: correct loadAdminData binding
+    async function loadAdminData(){
+      // populate languages list and selects
+      const langsSnap = await db.collection('languages').orderBy('createdAt').get();
+      const langList = document.getElementById('languageList'); langList.innerHTML='';
+      const projLangSelect = document.getElementById('projLangSelect'); projLangSelect.innerHTML='';
+      const carouselSelect = document.getElementById('carouselLangSelect'); carouselSelect.innerHTML='';
+      langsSnap.forEach(doc=>{
+        const k = doc.id; const l = doc.data();
+        const row = document.createElement('div'); row.className='row';
+        row.innerHTML = `<div><strong>${l.name}</strong></div><div style=\"width:120px\">${l.count||0} projects</div><div style=\"width:160px\"><button onclick=\"toggleShow('${k}')\">Toggle Show</button> <button onclick=\"deleteLanguage('${k}')\">Delete</button></div>`;
+        langList.appendChild(row);
+        const opt = document.createElement('option'); opt.value = k; opt.textContent = l.name; projLangSelect.appendChild(opt);
+        const opt2 = opt.cloneNode(true); carouselSelect.appendChild(opt2);
+      });
+
+      // projects
+      const projList = document.getElementById('projectsList'); projList.innerHTML='';
+      const projSnap = await db.collection('projects').orderBy('createdAt','desc').get();
+      projSnap.forEach(doc=>{ const p = doc.data(); const id = doc.id; const row = document.createElement('div'); row.className='row'; row.innerHTML = `<div>${p.title}<div style=\"color:var(--muted);font-size:0.9rem\">${p.author} • ${p.language}</div></div><div style=\"width:120px\">$${p.price||0}</div><div style=\"width:160px\"><button onclick=\"editProject('${id}')\">Edit</button> <button onclick=\"deleteProject('${id}')\">Delete</button></div>`; projList.appendChild(row); });
+
+      // suggestions
+      const sList = document.getElementById('suggestionsList'); sList.innerHTML='';
+      const sSnap = await db.collection('suggestions').orderBy('createdAt','desc').get(); sSnap.forEach(doc=>{ const s=doc.data(); const id=doc.id; const row=document.createElement('div'); row.className='row'; row.innerHTML=`<div><strong>${s.name}</strong><div style=\"color:var(--muted);font-size:0.9rem\">${s.idea}<br>${s.email} ${s.phone||''}</div></div><div style=\"width:120px\"></div><div style=\"width:160px\"><button onclick=\"deleteSuggestion('${id}')\">Delete</button></div>`; sList.appendChild(row); });
+
+      // carousel order
+      const cDoc = await db.collection('settings').doc('carousel').get(); const order = cDoc.exists? (cDoc.data().languages||[]) : [];
+      renderCarouselOrder(order);
+    }
+
+    /********** small UI niceties **********/
+    // enable carousel scroll and drag
+    (function(){ const carousel = document.getElementById('carousel'); let rotY=0,isDown=false,startX=0,startRot=0; carousel.addEventListener('wheel', e=>{ e.preventDefault(); rotY += e.deltaY * 0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }, {passive:false}); carousel.addEventListener('mousedown', e=>{ isDown=true; startX=e.clientX; startRot=rotY; }); window.addEventListener('mousemove', e=>{ if(!isDown) return; const dx = e.clientX - startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }); window.addEventListener('mouseup', ()=>isDown=false); carousel.addEventListener('touchstart', e=>{ isDown=true; startX=e.touches[0].clientX; startRot=rotY; }); window.addEventListener('touchmove', e=>{ if(!isDown) return; const dx = e.touches[0].clientX - startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }); window.addEventListener('touchend', ()=>isDown=false); })();
 
     // tilt effect on lang tiles
-    function addTilt(el){
-      el.addEventListener('mousemove', (e)=>{
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left)/r.width;
-        const py = (e.clientY - r.top)/r.height;
-        const rotY = (px-0.5)*12; const rotX = (0.5-py)*8;
-        el.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`;
-      });
-      el.addEventListener('mouseleave', ()=> el.style.transform='translateY(0)');
-    }
+    function addTilt(el){ el.addEventListener('mousemove',(e)=>{ const r = el.getBoundingClientRect(); const px = (e.clientX - r.left)/r.width; const py = (e.clientY - r.top)/r.height; const rotY = (px-0.5)*12; const rotX = (0.5-py)*8; el.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`; }); el.addEventListener('mouseleave', ()=> el.style.transform='translateY(0)'); }
+    new MutationObserver(()=> document.querySelectorAll('.lang-tile').forEach(addTilt)).observe(document.getElementById('languagesGrid'),{childList:true});
 
-    // apply tilt to initial static tiles
-    function attachTileTilt(){
-      document.querySelectorAll('.lang-tile').forEach(addTilt);
-    }
-
-    // small helper to open 'add language' modal
-    document.getElementById('openAdd').addEventListener('click', ()=>{
-      const name = prompt('Add language name (eg: Node.js)');
-      if(!name) return; document.getElementById('newLangName').value = name; document.getElementById('addLangBtn').click();
-    });
-
-    // initial render
-    buildLangGrid(); createCarousel(); attachTileTilt();
-
-    // rebuild tilt listeners after DOM changes (e.g. new tiles)
-    const observer = new MutationObserver(()=>attachTileTilt());
-    observer.observe(document.getElementById('languagesGrid'),{childList:true})
+    // helper to load contact info from settings doc (optional)
+    async function loadContactInfo(){ const doc = await db.collection('settings').doc('contact').get().catch(()=>null); if(doc && doc.exists){ const d=doc.data(); if(d.phone) document.getElementById('contactPhone').textContent = d.phone; if(d.email) document.getElementById('contactEmail').textContent = d.email; } }
+    loadContactInfo();
 
   </script>
 </body>
