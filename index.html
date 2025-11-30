@@ -15,6 +15,8 @@
       --card-bg:#121820;
       --text-light:#ffffff;
       --muted:#8892b0;
+      --input-bg: rgba(255,255,255,0.03);
+      --accent: linear-gradient(45deg,var(--vibrant-blue),var(--electric-green));
     }
 
     *{box-sizing:border-box}
@@ -22,7 +24,7 @@
     body{background:linear-gradient(180deg,#071027 0%, var(--dark-bg) 60%);color:var(--text-light);}
     a{color:inherit}
 
-    header{position:sticky;top:0;z-index:40;padding:16px 6%;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(10,25,47,0.65),transparent);backdrop-filter:blur(6px)}
+    header{position:sticky;top:0;z-index:40;padding:16px 6%;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(10,25,47,0.75),transparent);backdrop-filter:blur(6px)}
     .logo{display:flex;align-items:center;gap:10px;font-weight:800}
     .logo i{color:var(--vibrant-blue);font-size:20px}
     .logo span{color:var(--electric-green)}
@@ -30,8 +32,20 @@
     .nav{display:flex;gap:18px;align-items:center}
     .nav a{padding:8px 12px;border-radius:8px;font-weight:600;color:var(--muted);text-decoration:none}
     .nav a:hover{color:var(--text-light);background:rgba(255,255,255,0.03)}
+    .nav a.active{background:var(--accent);color:#042233}
 
     .container{width:90%;max-width:1140px;margin:0 auto}
+
+    /* Inputs styling (fix #1) */
+    input, select, textarea, button{
+      font-family:inherit;font-size:14px;outline:none
+    }
+    input[type=text], input, select, textarea{
+      background:var(--input-bg);border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:10px;color:var(--text-light);width:100%;transition:box-shadow 0.15s ease;border-radius:10px
+    }
+    input:focus, textarea:focus, select:focus{box-shadow:0 6px 18px rgba(0,123,255,0.08);border-color:rgba(0,123,255,0.3)}
+    .btn{background:var(--accent);border:none;color:#042233;padding:10px 14px;border-radius:999px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--text-light)}
 
     /* Reuse previous hero / 3D layout (student view) */
     .hero{padding:80px 6% 40px;display:grid;grid-template-columns:1fr 520px;gap:30px;align-items:center}
@@ -39,26 +53,22 @@
     .hero h1{font-size:44px;line-height:1.02;margin:0 0 12px}
     .hero h1 span{color:var(--electric-green)}
     .hero p{color:#c8d6f6;font-size:1.05rem;margin-bottom:18px}
-    .hero-cta{display:flex;gap:12px}
-    .btn{background:linear-gradient(45deg,var(--vibrant-blue),var(--electric-green));border:none;color:#042233;padding:12px 22px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,210,184,0.12)}
-    .btn.secondary{background:transparent;border:2px solid rgba(255,255,255,0.06);color:var(--text-light)}
 
     .scene{height:420px;display:flex;align-items:center;justify-content:center;perspective:1400px}
     .carousel{width:420px;height:300px;transform-style:preserve-3d;position:relative;transition:transform 0.8s cubic-bezier(.2,.9,.3,1);}
     .card-3d{position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate(-50%,-50%);width:320px;height:220px;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(2,6,23,0.6);background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;justify-content:space-between;color:var(--text-light);transition:transform 0.25s ease,box-shadow 0.25s ease}
-
     .card-3d .title{font-weight:800;font-size:20px}
-    .card-3d .meta{color:var(--muted);font-size:0.92rem}
     .card-3d .chip{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.25);font-weight:700}
 
     .projects-wrap{padding:40px 6%;background:linear-gradient(180deg,transparent, rgba(255,255,255,0.02));}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
     .lang-tile{border-radius:12px;padding:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
     .lang-tile:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(3,10,30,0.6)}
-    .lang-tile .lang-name{font-weight:800;font-size:18px}
-    .lang-tile .count{color:var(--muted);font-size:0.9rem}
+    .lang-name{font-weight:800;font-size:18px}
+    .count{color:var(--muted);font-size:0.9rem}
 
-    .panel{position:fixed;right:24px;top:120px;width:380px;max-height:70vh;padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(2,6,23,0.6);overflow:auto}
+    .panel{position:fixed;right:24px;top:120px;width:380px;max-height:70vh;padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(2,6,23,0.6);overflow:auto;transition:opacity 0.25s ease,transform 0.25s ease}
+    .panel.hidden{opacity:0;transform:translateX(20px);pointer-events:none}
     .panel h3{margin:0 0 8px}
     .project-item{padding:12px;border-radius:10px;margin-bottom:12px;background:rgba(0,0,0,0.25);display:flex;justify-content:space-between;align-items:center}
     .project-item .left{max-width:70%}
@@ -71,8 +81,6 @@
     .badge{position:absolute;right:12px;top:12px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--vibrant-blue),var(--electric-green));color:#042233;font-weight:800}
 
     .mini-form{display:flex;gap:8px;margin-top:12px}
-    .mini-form input, .mini-form select{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)}
-    .mini-form button{padding:8px 12px;border-radius:8px;border:none;background:var(--electric-green);color:#042233;font-weight:700}
 
     .section-title{display:flex;align-items:center;gap:12px}
     .section-title h2{margin:0}
@@ -82,23 +90,24 @@
     .admin-wrap{padding:40px 6%;min-height:80vh}
     .card{background:var(--card-bg);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
     .form-row{display:flex;gap:8px}
-    .form-row input,.form-row select,.form-row textarea{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)}
     .table{margin-top:12px}
     .table .row{display:flex;gap:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);align-items:center}
-    .table .row div{flex:1}
-
     .hidden{display:none}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:120}
+    .modal{background:var(--card-bg);padding:18px;border-radius:12px;width:min(640px,96%);border:1px solid rgba(255,255,255,0.04)}
 
   </style>
 </head>
 <body>
   <header>
     <div class="logo"><i class="fas fa-code"></i> Kode <span>Kraft</span></div>
-    <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <a href="#admin">Admin</a>
+    <nav class="nav" id="mainNav">
+      <a href="#home" data-href="#home">Home</a>
+      <a href="#projects" data-href="#projects">Projects</a>
+      <a href="#contact" data-href="#contact">Contact</a>
+      <a href="#admin" data-href="#admin">Admin</a>
     </nav>
   </header>
 
@@ -110,16 +119,13 @@
         <p>Designed for college students. Browse by language, preview live project cards with 3D tilt, and suggest custom projects on the contact page.</p>
         <div class="hero-cta">
           <button class="btn" onclick="location.hash='#projects'">Explore Projects</button>
-          <button class="btn secondary" onclick="alert('How it works: Browse languages → view projects → download PDF from Drive or contact admin')">How it works</button>
+          <button class="btn secondary" onclick="alert('How it works: Browse languages → view projects → open Drive PDF or contact admin')">How it works</button>
         </div>
 
         <div style="margin-top:28px">
           <div class="section-title"><h2 style="color:var(--text-light)">Trending & Featured</h2><div class="underline"></div></div>
           <div style="height:18px"></div>
-          <div class="scene" aria-hidden="true">
-            <div class="carousel" id="carousel"></div>
-            <div class="badge">Best sellers</div>
-          </div>
+          <div class="scene" aria-hidden="true"><div class="carousel" id="carousel"></div><div class="badge">Best sellers</div></div>
         </div>
       </div>
 
@@ -127,7 +133,7 @@
         <div style="width:100%;max-width:520px">
           <div style="color:var(--muted);font-weight:700;margin-bottom:8px">Search projects</div>
           <div style="display:flex;gap:8px;margin-bottom:12px">
-            <input id="searchInput" placeholder="Search by title or keyword" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text-light)" />
+            <input id="searchInput" placeholder="Search by title or keyword" />
             <button class="btn" id="searchBtn">Go</button>
           </div>
 
@@ -199,7 +205,7 @@
     </section>
 
     <!-- Shared right panel for project list -->
-    <aside class="panel" id="projectPanel" aria-live="polite">
+    <aside class="panel hidden" id="projectPanel" aria-live="polite">
       <h3>Select a language</h3>
       <div id="panelList" style="margin-top:14px">
         <div style="color:var(--muted)">No language selected — pick one from the grid.</div>
@@ -246,7 +252,7 @@
                 </div>
                 <div style="display:flex;gap:8px;margin-top:8px">
                   <select id="projLangSelect"></select>
-                  <input id="projPrice" placeholder="Price" />
+                  <input id="projPrice" placeholder="Price (INR)" />
                 </div>
                 <textarea id="projDesc" placeholder="Short description"></textarea>
                 <input id="projDriveUrl" placeholder="Google Drive URL (share link)" />
@@ -280,299 +286,146 @@
       </div>
     </section>
 
+    <!-- Edit Project Modal -->
+    <div id="editModal" class="hidden">
+      <div class="modal-backdrop" id="modalBackdrop" style="display:none">
+        <div class="modal">
+          <h3>Edit Project</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+            <input id="editTitle" placeholder="Title" />
+            <input id="editAuthor" placeholder="Author" />
+            <select id="editLang"></select>
+            <input id="editPrice" placeholder="Price (INR)" />
+            <textarea id="editDesc" placeholder="Description"></textarea>
+            <input id="editDriveUrl" placeholder="Google Drive URL" />
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button class="btn" id="saveEditBtn">Save</button>
+              <button class="btn secondary" id="cancelEditBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
-  <!-- Firebase SDK (compat for simpler migration) -->
+  <!-- Firebase SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
-  <!-- Note: We're not using Firebase Storage for PDFs; PDFs will be Drive URLs provided by admin -->
 
   <script>
-    /*********** PASTE YOUR FIREBASE CONFIG BELOW ***********
-     * Create a Firebase project (console.firebase.google.com)
-     * Enable Firestore and Auth (Email/Password)
-     * Create an admin user in Authentication
-     * Then paste the web app config here (apiKey, authDomain, projectId...)
-     */
-
+    /* ====== Paste your Firebase config here ====== */
     const firebaseConfig = {
-    apiKey: "AIzaSyB-O8vrpKUYW8a68-IsLKZ_kGfu4iNNtKw",
-    authDomain: "kodekraft-projects.firebaseapp.com",
-    projectId: "kodekraft-projects",
-    storageBucket: "kodekraft-projects.firebasestorage.app",
-    messagingSenderId: "573537190204",
-    appId: "1:573537190204:web:ab78dc9490e935dafa9e39"
+      apiKey: "REPLACE_ME",
+      authDomain: "REPLACE_ME",
+      projectId: "REPLACE_ME",
+      storageBucket: "REPLACE_ME",
+      messagingSenderId: "REPLACE_ME",
+      appId: "REPLACE_ME"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Simple router
+    /* Router + nav highlight (fix #5) */
+    function setActiveNav(){
+      const hash = (location.hash || '#home').split('?')[0];
+      document.querySelectorAll('#mainNav a').forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')===hash); });
+    }
     function router(){
+      setActiveNav();
       const hash = location.hash || '#home';
       document.getElementById('studentView').classList.add('hidden');
       document.getElementById('projectsView').classList.add('hidden');
       document.getElementById('contactView').classList.add('hidden');
       document.getElementById('adminView').classList.add('hidden');
-      if(hash.startsWith('#admin')){
-        document.getElementById('adminView').classList.remove('hidden');
-        checkAuthState();
-      } else if(hash.startsWith('#projects')){
-        document.getElementById('projectsView').classList.remove('hidden');
-        loadLanguagesGrid();
-      } else if(hash.startsWith('#contact')){
-        document.getElementById('contactView').classList.remove('hidden');
-      } else {
-        document.getElementById('studentView').classList.remove('hidden');
-        refreshCarousel(); loadLanguagesGrid();
-      }
+      if(hash.startsWith('#admin')){ document.getElementById('adminView').classList.remove('hidden'); checkAuthState(); }
+      else if(hash.startsWith('#projects')){ document.getElementById('projectsView').classList.remove('hidden'); loadLanguagesGrid(); }
+      else if(hash.startsWith('#contact')){ document.getElementById('contactView').classList.remove('hidden'); }
+      else { document.getElementById('studentView').classList.remove('hidden'); refreshCarousel(); loadLanguagesGrid(); }
     }
-    window.addEventListener('hashchange', router);
-    window.addEventListener('load', router);
+    window.addEventListener('hashchange', router); window.addEventListener('load', router);
 
-    /************** Student-side functionality (read only) **************/
-    async function refreshCarousel(){
-      const carousel = document.getElementById('carousel');
-      carousel.innerHTML = '';
-      // get carousel order from settings document
+    /* Format INR (fix #3) */
+    const INR = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+
+    /* Project panel behavior: show/hide & auto-hide after 30s (fix #2 & #4 & #6) */
+    let panelTimer = null;
+    function showPanel(){ const p = document.getElementById('projectPanel'); p.classList.remove('hidden'); resetPanelTimer(); }
+    function hidePanel(){ const p = document.getElementById('projectPanel'); p.classList.add('hidden'); clearPanelTimer(); }
+    function resetPanelTimer(){ clearPanelTimer(); panelTimer = setTimeout(()=>{ document.getElementById('projectPanel').classList.add('hidden'); }, 30000); }
+    function clearPanelTimer(){ if(panelTimer){ clearTimeout(panelTimer); panelTimer = null; } }
+    // pause hide when user interacts
+    document.getElementById('projectPanel').addEventListener('mouseenter', ()=> clearPanelTimer());
+    document.getElementById('projectPanel').addEventListener('mouseleave', ()=> resetPanelTimer());
+
+    /* Student-side functions */
+    async function refreshCarousel(){ const carousel = document.getElementById('carousel'); carousel.innerHTML='';
       const settingsDoc = await db.collection('settings').doc('carousel').get().catch(()=>null);
       let order = [];
       if(settingsDoc && settingsDoc.exists){ order = settingsDoc.data().languages || []; }
-      // if empty, pick first 5 languages
-      if(order.length===0){
-        const langsSnap = await db.collection('languages').limit(6).get();
-        order = langsSnap.docs.map(d=>d.id);
-      }
+      if(order.length===0){ const langsSnap = await db.collection('languages').limit(6).get(); order = langsSnap.docs.map(d=>d.id); }
       const total = Math.min(order.length,6) || 1;
-      order.slice(0,total).forEach((key,i)=>{
-        db.collection('languages').doc(key).get().then(doc=>{
-          if(!doc.exists) return;
-          const lang = doc.data();
-          const el = document.createElement('div'); el.className='card-3d';
-          const angle = (360/total)*i;
-          el.style.transform = `translate(-50%,-50%) rotateY(${angle}deg) translateZ(360px)`;
-          el.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div class=\"title\">${lang.name}</div>
-              <div class=\"chip\">${lang.count || 0} P</div>
-            </div>
-            <div style=\"color:var(--muted);margin-top:8px;font-size:0.95rem\">Top projects & student favourites</div>
-            <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:14px\">
-              <div style=\"font-weight:800\">From $${lang.minPrice || 5}</div>
-              <button onclick=\"openPanel('${key}')\" style=\"padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light);cursor:pointer\">View</button>
-            </div>
-          `;
-          carousel.appendChild(el);
-        })
-      });
-    }
+      order.slice(0,total).forEach((key,i)=>{ db.collection('languages').doc(key).get().then(doc=>{ if(!doc.exists) return; const lang = doc.data(); const el = document.createElement('div'); el.className='card-3d'; const angle = (360/total)*i; el.style.transform = `translate(-50%,-50%) rotateY(${angle}deg) translateZ(360px)`; el.innerHTML = ` <div style="display:flex;justify-content:space-between;align-items:center"> <div class=\"title\">${lang.name}</div> <div class=\"chip\">${lang.count || 0} P</div> </div> <div style=\"color:var(--muted);margin-top:8px;font-size:0.95rem\">Top projects & student favourites</div> <div style=\"display:flex;justify-content:space-between;align-items:center;margin-top:14px\"> <div style=\"font-weight:800\">From ${INR.format(lang.minPrice || 0)}</div> <button onclick=\"openPanel('${key}')\" style=\"padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light);cursor:pointer\">View</button> </div>`; carousel.appendChild(el); }) }); }
 
-    async function loadLanguagesGrid(){
-      const grid = document.getElementById('languagesGrid');
-      grid.innerHTML = '';
-      const snap = await db.collection('languages').orderBy('createdAt','asc').get();
-      snap.forEach(doc=>{
-        const key = doc.id; const lang = doc.data();
-        const tile = document.createElement('div'); tile.className='lang-tile'; tile.dataset.lang = key;
-        tile.innerHTML = `<div class=\"lang-name\">${lang.name}</div><div class=\"count\">${lang.count || 0} projects</div>`;
-        tile.addEventListener('click', ()=> openPanel(key));
-        grid.appendChild(tile);
-      });
-    }
+    async function loadLanguagesGrid(){ const grid = document.getElementById('languagesGrid'); grid.innerHTML=''; const snap = await db.collection('languages').orderBy('createdAt','asc').get(); snap.forEach(doc=>{ const key = doc.id; const lang = doc.data(); const tile = document.createElement('div'); tile.className='lang-tile'; tile.dataset.lang = key; tile.innerHTML = `<div class=\"lang-name\">${lang.name}</div><div class=\"count\">${lang.count || 0} projects</div>`; tile.addEventListener('click', ()=> openPanel(key)); grid.appendChild(tile); }); }
 
-    async function openPanel(langKey){
-      const panel = document.getElementById('projectPanel');
-      const list = document.getElementById('panelList');
-      const langDoc = await db.collection('languages').doc(langKey).get();
-      if(!langDoc.exists){ list.innerHTML='<div style="color:var(--muted)\">No such language.</div>'; return; }
-      const lang = langDoc.data();
-      panel.querySelector('h3').textContent = lang.name + ' — Projects';
-      list.innerHTML = '';
-      const projSnap = await db.collection('projects').where('language','==',langKey).orderBy('createdAt','desc').get();
-      if(projSnap.empty){ list.innerHTML='<div style="color:var(--muted)">No projects yet — contact admin.</div>'; return; }
-      projSnap.forEach(doc=>{
-        const p = doc.data();
-        const item = document.createElement('div'); item.className='project-item';
-        item.innerHTML = `<div class=\"left\"><div class=\"title\">${p.title}</div><div class=\"meta\">by ${p.author} • ${p.description || ''}</div></div><div><a href=\"${p.driveUrl || '#'}\" target=\"_blank\">Open PDF</a></div>`;
-        list.appendChild(item);
-      });
-      // highlight selected tile
-      document.querySelectorAll('.lang-tile').forEach(t=>t.style.boxShadow='none');
-      const sel = document.querySelector(`.lang-tile[data-lang=\"${langKey}\"]`);
-      if(sel) sel.style.boxShadow='0 18px 46px rgba(1,20,40,0.6)';
-    }
+    async function openPanel(langKey){ // show panel and populate
+      const panel = document.getElementById('projectPanel'); const list = document.getElementById('panelList'); const langDoc = await db.collection('languages').doc(langKey).get(); if(!langDoc.exists){ list.innerHTML='<div style="color:var(--muted)">No such language.</div>'; showPanel(); return; } const lang = langDoc.data(); panel.querySelector('h3').textContent = lang.name + ' — Projects'; list.innerHTML=''; const projSnap = await db.collection('projects').where('language','==',langKey).orderBy('createdAt','desc').get(); if(projSnap.empty){ list.innerHTML='<div style="color:var(--muted)">No projects yet — contact admin.</div>'; showPanel(); return; } projSnap.forEach(doc=>{ const p = doc.data(); const item = document.createElement('div'); item.className='project-item'; const priceDisplay = p.price? INR.format(p.price) : 'Free'; item.innerHTML = `<div class=\"left\"><div class=\"title\">${p.title}</div><div class=\"meta\">by ${p.author} • ${p.description || ''}</div></div><div><a href=\"${p.driveUrl || '#'}\" target=\"_blank\">Open PDF</a><div style=\"text-align:right;color:var(--muted);font-size:0.9rem;margin-top:6px\">${priceDisplay}</div></div>`; list.appendChild(item); }); showPanel(); }
 
-    document.getElementById('searchBtn').addEventListener('click', async ()=>{
-      const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      if(!q) return alert('Enter search term');
-      const results = [];
-      const snap = await db.collection('projects').get();
-      snap.forEach(doc=>{ const p = doc.data(); if((p.title && p.title.toLowerCase().includes(q)) || (p.description && p.description.toLowerCase().includes(q)) ) results.push({id:doc.id,...p}) });
-      if(results.length===0) return alert('No matches');
-      // open panel for first match's language
-      openPanel(results[0].language);
-    });
+    // search
+    document.getElementById('searchBtn').addEventListener('click', async ()=>{ const q = document.getElementById('searchInput').value.trim().toLowerCase(); if(!q) return alert('Enter search term'); const results = []; const snap = await db.collection('projects').get(); snap.forEach(doc=>{ const p = doc.data(); if((p.title && p.title.toLowerCase().includes(q)) || (p.description && p.description.toLowerCase().includes(q)) ) results.push({id:doc.id,...p}) }); if(results.length===0) return alert('No matches'); openPanel(results[0].language); });
 
-    /************** Contact (suggestions) **************/
-    document.getElementById('submitSuggestion').addEventListener('click', async ()=>{
-      const name = document.getElementById('s_name').value.trim();
-      const email = document.getElementById('s_email').value.trim();
-      const phone = document.getElementById('s_phone').value.trim();
-      const idea = document.getElementById('s_idea').value.trim();
-      if(!name || !email || !idea) return alert('Please provide name, email and idea');
-      await db.collection('suggestions').add({name,email,phone,idea,createdAt: firebase.firestore.FieldValue.serverTimestamp()});
-      alert('Suggestion submitted — thank you!');
-      document.getElementById('s_name').value='';document.getElementById('s_email').value='';document.getElementById('s_phone').value='';document.getElementById('s_idea').value='';
-    });
+    /* Contact form handlers (fix #7) */
+    document.getElementById('submitSuggestion').addEventListener('click', async ()=>{ const name = document.getElementById('s_name').value.trim(); const email = document.getElementById('s_email').value.trim(); const phone = document.getElementById('s_phone').value.trim(); const idea = document.getElementById('s_idea').value.trim(); if(!name || !email || !idea) return alert('Please provide name, email and idea'); try{ await db.collection('suggestions').add({name,email,phone,idea,createdAt: firebase.firestore.FieldValue.serverTimestamp()}); alert('Suggestion submitted — thank you!'); document.getElementById('s_name').value=''; document.getElementById('s_email').value=''; document.getElementById('s_phone').value=''; document.getElementById('s_idea').value=''; }catch(err){ alert('Error: '+err.message) } });
+    document.getElementById('clearSuggestion').addEventListener('click', ()=>{ document.getElementById('s_name').value=''; document.getElementById('s_email').value=''; document.getElementById('s_phone').value=''; document.getElementById('s_idea').value=''; });
 
-    /************** Admin: Auth flows & dashboard **************/
-    document.getElementById('adminLoginBtn').addEventListener('click', async ()=>{
-      const email = document.getElementById('adminEmail').value.trim();
-      const pass = document.getElementById('adminPassword').value.trim();
-      if(!email || !pass) return alert('Enter email and password');
-      try{ await auth.signInWithEmailAndPassword(email, pass); }
-      catch(err){ alert('Login failed: '+err.message); }
-    });
-
+    /* Admin: Auth & Dashboard */
+    document.getElementById('adminLoginBtn').addEventListener('click', async ()=>{ const email = document.getElementById('adminEmail').value.trim(); const pass = document.getElementById('adminPassword').value.trim(); if(!email || !pass) return alert('Enter email and password'); try{ await auth.signInWithEmailAndPassword(email, pass); }catch(err){ alert('Login failed: '+err.message); } });
     document.getElementById('adminLogout').addEventListener('click', async ()=>{ await auth.signOut(); alert('Logged out'); location.hash='#admin'; router(); });
 
-    function checkAuthState(){
-      auth.onAuthStateChanged(user=>{
-        if(user){ showAdminDashboard(); }
-        else { showAdminLogin(); }
-      });
-    }
-
+    function checkAuthState(){ auth.onAuthStateChanged(user=>{ if(user){ showAdminDashboard(); } else { showAdminLogin(); } }); }
     function showAdminLogin(){ document.getElementById('adminLoginCard').classList.remove('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); }
     function showAdminDashboard(){ document.getElementById('adminLoginCard').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); loadAdminData(); }
 
-    async function loadAdminData(){
-      // populate languages
-      const langSelect = document.getElementById('projLangSelect'); langSelect.innerHTML='';
-      const carouselSelect = document.getElementById('carouselLangSelect'); carouselSelect.innerHTML='';
-      const langsSnap = await db.collection('languages').orderBy('createdAt').get();
-      const langList = document.getElementById('languageList'); langList.innerHTML='';
-      langsSnap.forEach(doc=>{
-        const k=doc.id; const l=doc.data();
-        // language table row
-        const row = document.createElement('div'); row.className='row';
-        row.innerHTML = `<div><strong>${l.name}</strong></div><div style=\"width:120px;\">${l.count||0} projects</div><div style=\"width:160px;\"><button onclick=\"toggleShow('`+k+`')\">Toggle Show</button> <button onclick=\"deleteLanguage('`+k+`')\">Delete</button></div>`;
-        langList.appendChild(row);
-        // select options
-        const opt = document.createElement('option'); opt.value=k; opt.textContent = l.name; langSelect.appendChild(opt);
-        const opt2 = opt.cloneNode(true); carouselSelect.appendChild(opt2);
-      });
+    /* Admin CRUD */
+    document.getElementById('addLanguageBtn').addEventListener('click', async ()=>{ const name = document.getElementById('langName').value.trim(); if(!name) return alert('Enter language name'); const key = name.toLowerCase().replace(/[^a-z0-9]+/g,'-'); try{ await db.collection('languages').doc(key).set({name,createdAt:firebase.firestore.FieldValue.serverTimestamp(),count:0,minPrice:0,showInCarousel:true}); document.getElementById('langName').value=''; await loadAdminData(); refreshCarousel(); alert('Language added'); }catch(err){ alert(err.message); } });
 
-      // populate projects view
-      const projList = document.getElementById('projectsList'); projList.innerHTML='';
-      const projSnap = await db.collection('projects').orderBy('createdAt','desc').get();
-      projSnap.forEach(doc=>{
-        const p = doc.data(); const id=doc.id;
-        const row = document.createElement('div'); row.className='row';
-        row.innerHTML = `<div>${p.title}<div style=\"color:var(--muted);font-size:0.9rem\">${p.author} • ${p.language}</div></div><div style=\"width:120px\">$${p.price||0}</div><div style=\"width:160px\"><button onclick=\"editProject('`+id+`')\">Edit</button> <button onclick=\"deleteProject('`+id+`')\">Delete</button></div>`;
-        projList.appendChild(row);
-      });
+    document.getElementById('addProjectBtn').addEventListener('click', async ()=>{ const title = document.getElementById('projTitle').value.trim(); const author=document.getElementById('projAuthor').value.trim()||'Student'; const lang=document.getElementById('projLangSelect').value; const price=parseFloat(document.getElementById('projPrice').value)||0; const desc=document.getElementById('projDesc').value.trim(); const driveUrl=document.getElementById('projDriveUrl').value.trim(); if(!title || !lang) return alert('Title and language required'); try{ await db.collection('projects').add({title,author,language:lang,price,description:desc,driveUrl,createdAt:firebase.firestore.FieldValue.serverTimestamp()}); // update language counts
+      const langRef = db.collection('languages').doc(lang); const langDoc = await langRef.get(); const prevCount = langDoc.exists ? (langDoc.data().count||0) : 0; const prevMin = langDoc.exists ? (langDoc.data().minPrice||price) : price; const newMin = prevCount===0?price:Math.min(prevMin||price,price);
+      await langRef.set({name:langDoc.exists?langDoc.data().name:lang,count:prevCount+1,minPrice:newMin,createdAt:langDoc.exists?langDoc.data().createdAt:firebase.firestore.FieldValue.serverTimestamp(),showInCarousel:true},{merge:true}); document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';document.getElementById('projPrice').value='';document.getElementById('projDesc').value='';document.getElementById('projDriveUrl').value=''; await loadAdminData(); refreshCarousel(); alert('Project added'); }catch(err){ alert(err.message); } });
 
-      // suggestions
-      const sList = document.getElementById('suggestionsList'); sList.innerHTML='';
-      const sSnap = await db.collection('suggestions').orderBy('createdAt','desc').get();
-      sSnap.forEach(doc=>{ const s=doc.data(); const id=doc.id; const row=document.createElement('div'); row.className='row'; row.innerHTML=`<div><strong>${s.name}</strong><div style=\"color:var(--muted);font-size:0.9rem\">${s.idea}<br>${s.email} ${s.phone||''}</div></div><div style=\"width:120px\"></div><div style=\"width:160px\"><button onclick=\"deleteSuggestion('`+id+`')\">Delete</button></div>`; sList.appendChild(row); });
-
-      // carousel order
-      const cDoc = await db.collection('settings').doc('carousel').get(); const order = cDoc.exists? (cDoc.data().languages || []) : [];
-      renderCarouselOrder(order);
-    }
+    async function loadAdminData(){ const langsSnap = await db.collection('languages').orderBy('createdAt').get(); const langList = document.getElementById('languageList'); langList.innerHTML=''; const projLangSelect = document.getElementById('projLangSelect'); projLangSelect.innerHTML=''; const carouselSelect = document.getElementById('carouselLangSelect'); carouselSelect.innerHTML=''; langsSnap.forEach(doc=>{ const k = doc.id; const l = doc.data(); const row = document.createElement('div'); row.className='row'; row.innerHTML = `<div><strong>${l.name}</strong></div><div style=\"width:120px\">${l.count||0} projects</div><div style=\"width:160px\"><button onclick=\"toggleShow('${k}')\">Toggle Show</button> <button onclick=\"deleteLanguage('${k}')\">Delete</button></div>`; langList.appendChild(row); const opt = document.createElement('option'); opt.value = k; opt.textContent = l.name; projLangSelect.appendChild(opt); const opt2 = opt.cloneNode(true); carouselSelect.appendChild(opt2); }); const projList = document.getElementById('projectsList'); projList.innerHTML=''; const projSnap = await db.collection('projects').orderBy('createdAt','desc').get(); projSnap.forEach(doc=>{ const p = doc.data(); const id = doc.id; const row = document.createElement('div'); row.className='row'; row.innerHTML = `<div>${p.title}<div style=\"color:var(--muted);font-size:0.9rem\">${p.author} • ${p.language}</div></div><div style=\"width:120px\">${INR.format(p.price||0)}</div><div style=\"width:160px\"><button onclick=\"openEditModal('${id}')\">Edit</button> <button onclick=\"deleteProject('${id}')\">Delete</button></div>`; projList.appendChild(row); }); const sList = document.getElementById('suggestionsList'); sList.innerHTML=''; const sSnap = await db.collection('suggestions').orderBy('createdAt','desc').get(); sSnap.forEach(doc=>{ const s=doc.data(); const id=doc.id; const row=document.createElement('div'); row.className='row'; row.innerHTML=`<div><strong>${s.name}</strong><div style=\"color:var(--muted);font-size:0.9rem\">${s.idea}<br>${s.email} ${s.phone||''}</div></div><div style=\"width:120px\"></div><div style=\"width:160px\"><button onclick=\"deleteSuggestion('${id}')\">Delete</button></div>`; sList.appendChild(row); }); const cDoc = await db.collection('settings').doc('carousel').get(); const order = cDoc.exists? (cDoc.data().languages||[]) : []; renderCarouselOrder(order); }
 
     function renderCarouselOrder(order){ const container = document.getElementById('carouselOrder'); container.innerHTML=''; order.forEach((k,i)=>{ const el=document.createElement('div'); el.className='row'; el.innerHTML = `<div>${i+1}. ${k}</div><div style=\"width:120px\"><button onclick=\"removeFromCarousel('${k}')\">Remove</button></div>`; container.appendChild(el); }); }
 
-    document.getElementById('addLanguageBtn').addEventListener('click', async ()=>{
-      const name = document.getElementById('langName').value.trim(); if(!name) return alert('Enter language name');
-      const key = name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
-      await db.collection('languages').doc(key).set({name,createdAt:firebase.firestore.FieldValue.serverTimestamp(),count:0,minPrice:0,showInCarousel:true});
-      document.getElementById('langName').value=''; loadAdminData();
-    });
-
-    async function loadAdminData(){ await loadAdminDataInternal(); }
-    async function loadAdminDataInternal(){ await loadAdminDataWrapper(); }
-    async function loadAdminDataWrapper(){ await loadAdminData(); }
-    // Avoid recursion issues; simply call the main loader once at the end of auth state change.
-
-    // but we will implement direct functions now:
-    async function toggleShow(key){ const d = await db.collection('languages').doc(key).get(); const cur = d.data(); await db.collection('languages').doc(key).update({showInCarousel: !cur.showInCarousel}); loadAdminData(); refreshCarousel(); }
-    async function deleteLanguage(key){ if(!confirm('Delete language and its projects?')) return; // also delete its projects
-      const projSnap = await db.collection('projects').where('language','==',key).get(); const batch = db.batch(); projSnap.forEach(d=>batch.delete(d.ref)); batch.delete(db.collection('languages').doc(key)); await batch.commit(); loadAdminData(); refreshCarousel(); }
-
-    document.getElementById('addProjectBtn').addEventListener('click', async ()=>{
-      const title = document.getElementById('projTitle').value.trim(); const author=document.getElementById('projAuthor').value.trim()||'Student';
-      const lang=document.getElementById('projLangSelect').value; const price=parseFloat(document.getElementById('projPrice').value)||0; const desc=document.getElementById('projDesc').value.trim(); const driveUrl=document.getElementById('projDriveUrl').value.trim();
-      if(!title || !lang) return alert('Title and language required');
-      await db.collection('projects').add({title,author,language:lang,price,description:desc,driveUrl,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      // update language counts and minPrice
-      const langRef = db.collection('languages').doc(lang);
-      const langDoc = await langRef.get();
-      const prevCount = langDoc.exists ? (langDoc.data().count||0) : 0; const prevMin = langDoc.exists ? (langDoc.data().minPrice||0) : 0;
-      const newMin = prevCount===0?price:Math.min(prevMin||price,price);
-      await langRef.set({name:langDoc.exists?langDoc.data().name:lang,count:prevCount+1,minPrice:newMin,createdAt:langDoc.exists?langDoc.data().createdAt:firebase.firestore.FieldValue.serverTimestamp(),showInCarousel:true},{merge:true});
-      document.getElementById('projTitle').value='';document.getElementById('projAuthor').value='';document.getElementById('projPrice').value='';document.getElementById('projDesc').value='';document.getElementById('projDriveUrl').value='';
-      await loadAdminData(); refreshCarousel(); alert('Project added');
-    });
-
-    async function editProject(id){ alert('Edit project - feature can be added. For now delete and recreate.'); }
-    async function deleteProject(id){ if(!confirm('Delete project?')) return; await db.collection('projects').doc(id).delete(); await loadAdminData(); refreshCarousel(); }
-
+    async function toggleShow(key){ const d = await db.collection('languages').doc(key).get(); const cur = d.data(); await db.collection('languages').doc(key).update({showInCarousel: !cur.showInCarousel}); await loadAdminData(); refreshCarousel(); }
+    async function deleteLanguage(key){ if(!confirm('Delete language and its projects?')) return; const projSnap = await db.collection('projects').where('language','==',key).get(); const batch = db.batch(); projSnap.forEach(d=>batch.delete(d.ref)); batch.delete(db.collection('languages').doc(key)); await batch.commit(); await loadAdminData(); refreshCarousel(); }
+    async function deleteProject(id){ if(!confirm('Delete project?')) return; const pDoc = await db.collection('projects').doc(id).get(); if(!pDoc.exists) return; const lang = pDoc.data().language; await db.collection('projects').doc(id).delete(); // decrement language count
+      const langRef = db.collection('languages').doc(lang); const langDoc = await langRef.get(); if(langDoc.exists){ const prev = langDoc.data().count || 1; await langRef.update({count: Math.max(0, prev-1)}); }
+      await loadAdminData(); refreshCarousel(); }
     async function deleteSuggestion(id){ if(!confirm('Delete suggestion?')) return; await db.collection('suggestions').doc(id).delete(); await loadAdminData(); }
 
-    document.getElementById('addToCarouselBtn').addEventListener('click', async ()=>{
-      const v = document.getElementById('carouselLangSelect').value; if(!v) return alert('Select language');
-      const docRef = db.collection('settings').doc('carousel'); const doc = await docRef.get(); let arr = doc.exists? (doc.data().languages||[]) : [];
-      if(!arr.includes(v)) arr.push(v);
-      await docRef.set({languages:arr}); loadAdminData(); renderCarouselOrder(arr); refreshCarousel();
-    });
-
+    document.getElementById('addToCarouselBtn').addEventListener('click', async ()=>{ const v = document.getElementById('carouselLangSelect').value; if(!v) return alert('Select language'); const docRef = db.collection('settings').doc('carousel'); const doc = await docRef.get(); let arr = doc.exists? (doc.data().languages||[]) : []; if(!arr.includes(v)) arr.push(v); await docRef.set({languages:arr}); await loadAdminData(); renderCarouselOrder(arr); refreshCarousel(); });
     async function removeFromCarousel(key){ const docRef = db.collection('settings').doc('carousel'); const doc = await docRef.get(); if(!doc.exists) return; let arr = doc.data().languages||[]; arr = arr.filter(x=>x!==key); await docRef.set({languages:arr}); renderCarouselOrder(arr); refreshCarousel(); }
 
-    // Prevent recursion mistake earlier: correct loadAdminData binding
-    async function loadAdminData(){
-      // populate languages list and selects
-      const langsSnap = await db.collection('languages').orderBy('createdAt').get();
-      const langList = document.getElementById('languageList'); langList.innerHTML='';
-      const projLangSelect = document.getElementById('projLangSelect'); projLangSelect.innerHTML='';
-      const carouselSelect = document.getElementById('carouselLangSelect'); carouselSelect.innerHTML='';
-      langsSnap.forEach(doc=>{
-        const k = doc.id; const l = doc.data();
-        const row = document.createElement('div'); row.className='row';
-        row.innerHTML = `<div><strong>${l.name}</strong></div><div style=\"width:120px\">${l.count||0} projects</div><div style=\"width:160px\"><button onclick=\"toggleShow('${k}')\">Toggle Show</button> <button onclick=\"deleteLanguage('${k}')\">Delete</button></div>`;
-        langList.appendChild(row);
-        const opt = document.createElement('option'); opt.value = k; opt.textContent = l.name; projLangSelect.appendChild(opt);
-        const opt2 = opt.cloneNode(true); carouselSelect.appendChild(opt2);
-      });
+    /* Edit modal functions (new) */
+    let editingId = null;
+    async function openEditModal(id){ const doc = await db.collection('projects').doc(id).get(); if(!doc.exists) return alert('Project not found'); const p = doc.data(); editingId = id; document.getElementById('editTitle').value = p.title || ''; document.getElementById('editAuthor').value = p.author || ''; // populate lang select
+      const langsSnap = await db.collection('languages').orderBy('createdAt').get(); const editLang = document.getElementById('editLang'); editLang.innerHTML=''; langsSnap.forEach(d=>{ const o = document.createElement('option'); o.value=d.id; o.textContent=d.data().name; editLang.appendChild(o); }); document.getElementById('editLang').value = p.language; document.getElementById('editPrice').value = p.price || 0; document.getElementById('editDesc').value = p.description || ''; document.getElementById('editDriveUrl').value = p.driveUrl || ''; document.getElementById('modalBackdrop').style.display='flex'; }
+    document.getElementById('cancelEditBtn').addEventListener('click', ()=>{ document.getElementById('modalBackdrop').style.display='none'; editingId=null; });
+    document.getElementById('saveEditBtn').addEventListener('click', async ()=>{ if(!editingId) return; const title = document.getElementById('editTitle').value.trim(); const author = document.getElementById('editAuthor').value.trim()||'Student'; const language = document.getElementById('editLang').value; const price = parseFloat(document.getElementById('editPrice').value)||0; const description = document.getElementById('editDesc').value.trim(); const driveUrl = document.getElementById('editDriveUrl').value.trim(); try{ const docRef = db.collection('projects').doc(editingId); const before = await docRef.get(); if(!before.exists) return alert('Project not found'); const prevLang = before.data().language; await docRef.update({title,author,language,price,description,driveUrl}); // if language changed, update counts
+        if(prevLang !== language){ const prevRef = db.collection('languages').doc(prevLang); const newRef = db.collection('languages').doc(language); const prevDoc = await prevRef.get(); const newDoc = await newRef.get(); if(prevDoc.exists) await prevRef.update({count: Math.max(0,(prevDoc.data().count||1)-1)}); if(newDoc.exists) await newRef.update({count: (newDoc.data().count||0)+1}); }
+        document.getElementById('modalBackdrop').style.display='none'; editingId=null; await loadAdminData(); refreshCarousel(); alert('Project updated'); }catch(err){ alert(err.message); } });
 
-      // projects
-      const projList = document.getElementById('projectsList'); projList.innerHTML='';
-      const projSnap = await db.collection('projects').orderBy('createdAt','desc').get();
-      projSnap.forEach(doc=>{ const p = doc.data(); const id = doc.id; const row = document.createElement('div'); row.className='row'; row.innerHTML = `<div>${p.title}<div style=\"color:var(--muted);font-size:0.9rem\">${p.author} • ${p.language}</div></div><div style=\"width:120px\">$${p.price||0}</div><div style=\"width:160px\"><button onclick=\"editProject('${id}')\">Edit</button> <button onclick=\"deleteProject('${id}')\">Delete</button></div>`; projList.appendChild(row); });
-
-      // suggestions
-      const sList = document.getElementById('suggestionsList'); sList.innerHTML='';
-      const sSnap = await db.collection('suggestions').orderBy('createdAt','desc').get(); sSnap.forEach(doc=>{ const s=doc.data(); const id=doc.id; const row=document.createElement('div'); row.className='row'; row.innerHTML=`<div><strong>${s.name}</strong><div style=\"color:var(--muted);font-size:0.9rem\">${s.idea}<br>${s.email} ${s.phone||''}</div></div><div style=\"width:120px\"></div><div style=\"width:160px\"><button onclick=\"deleteSuggestion('${id}')\">Delete</button></div>`; sList.appendChild(row); });
-
-      // carousel order
-      const cDoc = await db.collection('settings').doc('carousel').get(); const order = cDoc.exists? (cDoc.data().languages||[]) : [];
-      renderCarouselOrder(order);
-    }
-
-    /********** small UI niceties **********/
-    // enable carousel scroll and drag
+    /* UI: carousel control (scroll/drag) and tilt */
     (function(){ const carousel = document.getElementById('carousel'); let rotY=0,isDown=false,startX=0,startRot=0; carousel.addEventListener('wheel', e=>{ e.preventDefault(); rotY += e.deltaY * 0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }, {passive:false}); carousel.addEventListener('mousedown', e=>{ isDown=true; startX=e.clientX; startRot=rotY; }); window.addEventListener('mousemove', e=>{ if(!isDown) return; const dx = e.clientX - startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }); window.addEventListener('mouseup', ()=>isDown=false); carousel.addEventListener('touchstart', e=>{ isDown=true; startX=e.touches[0].clientX; startRot=rotY; }); window.addEventListener('touchmove', e=>{ if(!isDown) return; const dx = e.touches[0].clientX - startX; rotY = startRot + dx*0.25; carousel.style.transform = `rotateY(${rotY}deg)`; }); window.addEventListener('touchend', ()=>isDown=false); })();
-
-    // tilt effect on lang tiles
     function addTilt(el){ el.addEventListener('mousemove',(e)=>{ const r = el.getBoundingClientRect(); const px = (e.clientX - r.left)/r.width; const py = (e.clientY - r.top)/r.height; const rotY = (px-0.5)*12; const rotX = (0.5-py)*8; el.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px)`; }); el.addEventListener('mouseleave', ()=> el.style.transform='translateY(0)'); }
     new MutationObserver(()=> document.querySelectorAll('.lang-tile').forEach(addTilt)).observe(document.getElementById('languagesGrid'),{childList:true});
 
-    // helper to load contact info from settings doc (optional)
+    /* Load contact info from settings (optional) */
     async function loadContactInfo(){ const doc = await db.collection('settings').doc('contact').get().catch(()=>null); if(doc && doc.exists){ const d=doc.data(); if(d.phone) document.getElementById('contactPhone').textContent = d.phone; if(d.email) document.getElementById('contactEmail').textContent = d.email; } }
     loadContactInfo();
 
